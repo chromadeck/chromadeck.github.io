@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+/* ─── Fonts: Montserrat + JetBrains Mono (fully offline) ─── */
+@import "@fontsource/montserrat/700.css";
+@import "@fontsource/montserrat/800.css";
+@import "@fontsource-variable/jetbrains-mono";
+
+/* ─── Custom theme tokens (light neobrutalist v0.8.0) ─── */
+@theme {
+  --color-paper: #FBF7F3;
+  --color-ink: #000000;
+  --color-card: #FFFFFF;
+  --color-popover: #FFFFFF;
+  --color-primary: #3DDC97;
+  --color-primary-foreground: #000000;
+  --color-secondary: #FFFFFF;
+  --color-muted: #ECE7DC;
+  --color-muted-foreground: #555555;
+  --color-accent-soft: #E4FAF0;
+  --color-destructive: #E5484D;
+  --color-destructive-foreground: #000000;
+  --color-danger-ink: #B91C1C;
+  --color-border: #000000;
+  --color-input: #000000;
+  --color-ring: #000000;
+  --color-success: #16A34A;
+  --color-warning: #F5A623;
+
+  /* Keep aliases for direct color refs in components */
+  --color-background: #FBF7F3;
+  --color-foreground: #000000;
+  --color-card-foreground: #000000;
+  --color-popover-foreground: #000000;
+
+  /* Brutal border geometry */
+  --border-width-DEFAULT: 2px;
+  --border-width-brutal: 2px;
+
+  /* Brutal drop shadows */
+  --shadow-brutal-sm: 2px 2px 0 #000;
+  --shadow-brutal: 4px 4px 0 #000;
+
+  /* Border radius */
+  --radius-lg: 12px;
+  --radius-2xl: 12px;
+  --radius-brutal: 6px;
+
+  /* Fonts */
+  --font-display: "Montserrat", "system-ui", "sans-serif";
+  --font-mono: "JetBrains Mono Variable", "Consolas", "monospace";
+  --font-body: "system-ui", "Segoe UI", "sans-serif";
+}
+
+/* ─── Keyframe animations ─── */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade-up-inner {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
