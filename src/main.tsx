@@ -4,6 +4,8 @@ import { createRoot } from "react-dom/client";
 import { Nav } from "./components/Nav";
 import { Hero } from "./components/Hero";
 import { BeforeAfter } from "./components/BeforeAfter";
+import { AppTour } from "./components/AppTour";
+import { Promo } from "./components/Promo";
 import { Features } from "./components/Features";
 import { HowItWorks } from "./components/HowItWorks";
 import { Download } from "./components/Download";
@@ -17,6 +19,8 @@ function App() {
         <main>
           <Hero />
           <BeforeAfter />
+          <AppTour />
+          <Promo />
           <Features />
           <HowItWorks />
           <Download />

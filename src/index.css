@@ -138,7 +138,81 @@
   transition-delay: var(--stagger-ms, 0ms);
 }
 
-/* ─── Mandatory reduced-motion path ─── */
+/* ─── Tour timeline (smooth drift + progress, transform/opacity only) ─── */
+@keyframes tour-kenburns {
+  from {
+    transform: scale(1) translate(0, 0);
+  }
+  to {
+    transform: scale(1.07) translate(-0.8%, 0.8%);
+  }
+}
+.tour-kenburns {
+  animation: tour-kenburns 4.5s var(--ease-out) both;
+}
+@keyframes tour-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.tour-progress-fill {
+  animation: tour-progress 4.5s linear both;
+  transform-origin: left;
+}
+.tour-paused .tour-kenburns,
+.tour-paused .tour-progress-fill {
+  animation-play-state: paused;
+}
+@keyframes tour-tremble {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  25% {
+    translate: -2px 0;
+  }
+  75% {
+    translate: 2px 0;
+  }
+}
+.tour-select-tremble {
+  animation: tour-tremble 0.28s linear infinite;
+}
+.tour-select-tremble[data-desync="1"] {
+  animation-delay: -0.07s;
+}
+.tour-select-tremble[data-desync="2"] {
+  animation-delay: -0.14s;
+}
+.tour-select-tremble[data-desync="3"] {
+  animation-delay: -0.21s;
+}
+@keyframes cta-soft {
+  0%,
+  100% {
+    box-shadow: 2px 2px 0 #000;
+  }
+  50% {
+    box-shadow: 4px 4px 0 #000;
+  }
+}
+.tour-cta-pulse {
+  animation: cta-soft 2s var(--ease-out) infinite;
+}
+@keyframes reapply-flash {
+  0% {
+    background-color: #3ddc97;
+  }
+  100% {
+    background-color: #fff;
+  }
+}
+.tour-reapply-flash {
+  animation: reapply-flash 1s var(--ease-out) both;
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -157,5 +231,12 @@
   }
   .shot-reveal {
     clip-path: none !important;
+  }
+  .tour-cta-pulse,
+  .tour-reapply-flash,
+  .tour-select-tremble,
+  .tour-kenburns,
+  .tour-progress-fill {
+    animation: none !important;
   }
 }

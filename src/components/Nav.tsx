@@ -43,6 +43,7 @@ export function Nav() {
           <div className="hidden md:flex items-center gap-5 mr-2">
             {[
               ["Compare", "#compare"],
+              ["Tour", "#tour"],
               ["Features", "#features"],
               ["How it works", "#how-it-works"],
               ["Download", "#download"],
