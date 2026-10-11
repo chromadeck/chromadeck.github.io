@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Download, ExternalLink } from "lucide-react";
+import { useEffect, useState, type CSSProperties } from "react";
+import { ArrowRight, Download, ExternalLink } from "lucide-react";
 import { fetchLatestRelease } from "../lib/releases";
 
 export function Hero() {
@@ -29,16 +29,32 @@ export function Hero() {
         {/* Left copy */}
         <div className="flex flex-col gap-6 max-w-[540px]">
           <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-none tracking-tighter text-ink">
-            Per-monitor color<br />
-            <span className="text-primary">pinned</span>
+            <span className="hero-line">
+              <span style={{ "--hero-delay": "0ms" } as CSSProperties}>
+                Per-monitor color
+              </span>
+            </span>
+            <span className="hero-line">
+              <span style={{ "--hero-delay": "80ms" } as CSSProperties}>
+                <span className="bg-primary px-2 border border-border shadow-brutal-sm">
+                  pinned
+                </span>
+              </span>
+            </span>
           </h1>
-          <p className="text-base md:text-lg leading-relaxed text-muted-foreground max-w-[65ch]">
+          <p
+            className="hero-item text-base md:text-lg leading-relaxed text-muted-foreground max-w-[65ch]"
+            style={{ "--hero-delay": "160ms" } as CSSProperties}
+          >
             Save color presets — brightness, contrast, gamma, RGB
             gains, digital vibrance, hue, and ICC profiles — and apply, pin,
             or enforce them per monitor from a single deck-style UI.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4">
+          <div
+            className="hero-item flex flex-wrap items-center gap-4"
+            style={{ "--hero-delay": "240ms" } as CSSProperties}
+          >
             {loading ? (
               <span className="rounded-lg bg-muted px-6 py-3 border border-border">
                 <span className="animate-pulse size-3 rounded-full bg-primary" />
@@ -46,29 +62,33 @@ export function Hero() {
             ) : downloadUrl ? (
               <a
                 href={downloadUrl}
-                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-display font-semibold text-primary-foreground border border-border shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms]"
+                className="group inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-display font-semibold text-primary-foreground border border-border shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms] ease-[var(--ease-out)]"
               >
                 <Download className="size-5" strokeWidth={2} />
                 Download MSI
+                <ArrowRight className="size-4 transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-1" strokeWidth={2.5} />
               </a>
             ) : (
               <a
                 href="https://github.com/miiidev/ChromaDeck/releases"
-                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-display font-semibold text-primary-foreground border border-border shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms]"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-display font-semibold text-primary-foreground border border-border shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms] ease-[var(--ease-out)]"
               >
                 View releases
               </a>
             )}
             <a
               href="https://github.com/miiidev/ChromaDeck"
-              className="inline-flex items-center gap-2 rounded-lg border border-border bg-secondary px-5 py-2.5 font-display text-sm text-ink shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms]"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-secondary px-5 py-2.5 font-display text-sm text-ink shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms] ease-[var(--ease-out)]"
             >
               <ExternalLink className="size-5" strokeWidth={2} />
               GitHub
             </a>
           </div>
 
-          <p className="text-[10px] font-mono text-muted-foreground tracking-wide leading-snug">
+          <p
+            className="hero-item text-[10px] font-mono text-muted-foreground tracking-wide leading-snug"
+            style={{ "--hero-delay": "320ms" } as CSSProperties}
+          >
             Windows 10/11 x64 · WebView2 · NVIDIA GPU recommended for full
             NVCP-native engine
           </p>
@@ -79,7 +99,7 @@ export function Hero() {
           <img
             src="/app-library.png"
             alt="The ChromaDeck preset library deck"
-            className="w-full max-w-[640px] rounded-2xl border border-border"
+            className="shot-reveal w-full max-w-[640px] rounded-2xl border border-border shadow-brutal"
             loading="eager"
           />
           <p className="font-mono text-[10px] text-muted-foreground tracking-wide">

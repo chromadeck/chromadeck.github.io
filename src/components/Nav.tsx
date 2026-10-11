@@ -50,7 +50,7 @@ export function Nav() {
               <a
                 key={href}
                 href={href}
-                className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground transition-colors duration-200 hover:text-ink"
+                className="relative font-mono text-[11px] uppercase tracking-widest text-muted-foreground transition-colors duration-200 ease-[var(--ease-out)] hover:text-ink after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:bg-ink after:transition-transform after:duration-200 after:ease-[var(--ease-out)] hover:after:scale-x-100"
               >
                 {label}
               </a>
@@ -58,7 +58,7 @@ export function Nav() {
           </div>
           <a
             href="https://github.com/miiidev/ChromaDeck/releases"
-            className="inline-flex items-center rounded-lg bg-primary px-3 py-1.5 font-display text-xs font-semibold text-primary-foreground border border-border shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms]"
+            className="inline-flex items-center rounded-lg bg-primary px-3 py-1.5 font-display text-xs font-semibold text-primary-foreground border border-border shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms] ease-[var(--ease-out)]"
           >
             Download
           </a>

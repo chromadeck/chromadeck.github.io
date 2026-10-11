@@ -4,6 +4,7 @@ import {
   vibranceHueApprox,
   type NvcpParams,
 } from "../lib/nvcp";
+import { Reveal } from "./Reveal";
 
 const PHOTO_SRC = "/compare-photo.jpg";
 
@@ -178,7 +179,8 @@ export function BeforeAfter() {
 
         <div className="grid lg:grid-cols-[1fr_320px] gap-8 items-start">
           {/* Compare frame */}
-          <div>
+          <Reveal>
+            <div>
             <div
               ref={frameRef}
               className="relative overflow-hidden rounded-2xl border border-border bg-card select-none shadow-brutal"
@@ -202,7 +204,7 @@ export function BeforeAfter() {
                     }}
                   >
                     <div className="absolute inset-y-0 -translate-x-1/2 w-0.5 bg-primary" />
-                    <div className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-primary text-primary-foreground font-mono text-xs px-2 py-1 border border-border">
+                    <div className={`absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-primary text-primary-foreground font-mono text-xs px-2 py-1 border border-border transition-transform duration-150 ease-[var(--ease-out)] ${dragging ? "scale-115" : ""}`}>
                       ◂ ▸
                     </div>
                   </div>
@@ -239,10 +241,12 @@ export function BeforeAfter() {
               driver LUT. ▲ Vibrance / hue are a preview approximation — those registers
               live driver-side.
             </p>
-          </div>
+            </div>
+          </Reveal>
 
           {/* Live sliders */}
-          <div className="rounded-2xl bg-card border border-border p-5 flex flex-col gap-4 shadow-brutal">
+          <Reveal staggerMs={120}>
+            <div className="rounded-2xl bg-card border border-border p-5 flex flex-col gap-4 shadow-brutal">
             <span className="font-display text-sm font-semibold text-ink">
               Live preset
             </span>
@@ -281,11 +285,12 @@ export function BeforeAfter() {
             </div>
             <button
               onClick={() => setParams({ ...DEFAULTS, rgbGains: [...DEFAULTS.rgbGains] as [number, number, number] })}
-              className="rounded-lg border border-border bg-secondary px-4 py-2 font-display text-sm text-ink shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms]"
+              className="rounded-lg border border-border bg-secondary px-4 py-2 font-display text-sm text-ink shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms] ease-[var(--ease-out)]"
             >
               Reset to defaults
             </button>
-          </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>

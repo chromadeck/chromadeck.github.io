@@ -1,3 +1,5 @@
+import { Reveal } from "./Reveal";
+
 const FEATURES = [
   {
     icon: "●",
@@ -75,13 +77,8 @@ export function Features() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {FEATURES.map((f, i) => (
-            <div
-              key={f.title}
-              className="rounded-2xl bg-card border border-border p-6 shadow-brutal transition-all duration-[90ms] hover:shadow-[6px_6px_0_#000] active:translate-y-[4px] active:shadow-none"
-              style={{
-                animation: `fade-up-inner 350ms ${(i * 0.08).toFixed(2)}s both`,
-              }}
-            >
+            <Reveal key={f.title} staggerMs={Math.min(i, 4) * 60}>
+            <div className="rounded-2xl bg-card border border-border p-6 shadow-brutal transition-all duration-[90ms] ease-[var(--ease-out)] hover:shadow-[6px_6px_0_#000] active:translate-y-[4px] active:shadow-none h-full">
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-primary font-mono text-sm">{f.icon}</span>
                 <h3 className="font-display text-lg font-semibold text-ink">
@@ -92,6 +89,7 @@ export function Features() {
                 {f.desc}
               </p>
             </div>
+            </Reveal>
           ))}
         </div>
       </div>

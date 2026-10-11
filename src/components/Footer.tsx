@@ -19,21 +19,21 @@ export function Footer() {
           <div className="flex flex-wrap gap-3">
             <a
               href="https://github.com/miiidev/ChromaDeck/releases"
-              className="font-mono text-[11px] text-muted-foreground hover:text-ink transition-colors duration-200"
+              className="font-mono text-[11px] text-muted-foreground hover:text-ink transition-colors duration-200 ease-[var(--ease-out)]"
             >
               Releases
             </a>
             <span className="font-mono text-[10px] text-muted-foreground">·</span>
             <a
               href="https://github.com/miiidev/ChromaDeck"
-              className="font-mono text-[11px] text-muted-foreground hover:text-ink transition-colors duration-200"
+              className="font-mono text-[11px] text-muted-foreground hover:text-ink transition-colors duration-200 ease-[var(--ease-out)]"
             >
               Source
             </a>
             <span className="font-mono text-[10px] text-muted-foreground">·</span>
             <a
               href="https://github.com/miiidev/ChromaDeck/blob/master/LICENSE"
-              className="font-mono text-[11px] text-muted-foreground hover:text-ink transition-colors duration-200"
+              className="font-mono text-[11px] text-muted-foreground hover:text-ink transition-colors duration-200 ease-[var(--ease-out)]"
             >
               License
             </a>

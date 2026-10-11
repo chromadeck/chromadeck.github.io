@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { fetchLatestRelease, formatBytes, Release } from "../lib/releases";
+import { Reveal } from "./Reveal";
 
 interface AssetCard {
   title: string;
@@ -70,13 +71,8 @@ export function Download() {
             const size = release ? asset.getSize(release) : null;
 
             return (
-              <div
-                key={asset.title}
-                className="rounded-2xl bg-card border border-border p-6 flex flex-col gap-4 shadow-brutal transition-all duration-[90ms] hover:shadow-[6px_6px_0_#000]"
-                style={{
-                  animation: `fade-up-inner 350ms ${(i * 0.08).toFixed(2)}s both`,
-                }}
-              >
+              <Reveal key={asset.title} staggerMs={i * 60}>
+              <div className="rounded-2xl bg-card border border-border p-6 flex flex-col gap-4 shadow-brutal transition-all duration-[90ms] ease-[var(--ease-out)] hover:shadow-[6px_6px_0_#000] h-full">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="font-mono text-sm text-primary">
                     {asset.icon}
@@ -98,7 +94,7 @@ export function Download() {
                 ) : url ? (
                   <a
                     href={url}
-                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 font-display text-sm font-semibold text-primary-foreground border border-border shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms]"
+                    className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 font-display text-sm font-semibold text-primary-foreground border border-border shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms] ease-[var(--ease-out)]"
                   >
                     <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M12 4 L4 20 20 20 Z" />
@@ -111,6 +107,7 @@ export function Download() {
                   </span>
                 )}
               </div>
+              </Reveal>
             );
           })}
         </div>

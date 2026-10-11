@@ -1,3 +1,5 @@
+import { Reveal } from "./Reveal";
+
 const STEPS = [
   {
     number: "01",
@@ -31,13 +33,8 @@ export function HowItWorks() {
 
         <div className="grid md:grid-cols-3 gap-8">
           {STEPS.map((s, i) => (
-            <div
-              key={s.number}
-              className="rounded-2xl bg-card border border-border p-6 text-center shadow-brutal transition-all duration-[90ms] hover:shadow-[6px_6px_0_#000] active:translate-y-[4px] active:shadow-none"
-              style={{
-                animation: `fade-up-inner 350ms ${(i * 0.1).toFixed(2)}s both`,
-              }}
-            >
+            <Reveal key={s.number} staggerMs={i * 60}>
+            <div className="rounded-2xl bg-card border border-border p-6 text-center shadow-brutal transition-all duration-[90ms] ease-[var(--ease-out)] hover:shadow-[6px_6px_0_#000] active:translate-y-[4px] active:shadow-none h-full">
               <div className="flex items-center justify-center mb-4">
                 <span className="inline-flex items-center justify-center size-10 rounded-lg bg-accent-soft border border-border">
                   <span className="font-mono text-lg font-bold text-primary">
@@ -52,6 +49,7 @@ export function HowItWorks() {
                 {s.desc}
               </p>
             </div>
+            </Reveal>
           ))}
         </div>
       </div>
