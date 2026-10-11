@@ -8,6 +8,8 @@ describe("Promo", () => {
     expect(html).toContain('id="video"');
     expect(html).toContain("/promo.mp4");
     expect(html).toContain("/promo-poster.jpg");
+    expect(html).toContain("/promo-short.mp4");
+    expect(html).toContain("/promo-short-poster.jpg");
     expect(html).toContain("muted");
   });
 });
