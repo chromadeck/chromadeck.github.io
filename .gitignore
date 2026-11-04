@@ -1,3 +1,17 @@
 node_modules/
 dist/
 .DS_Store
+
+# Next.js
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts.bak
+
+# Tooling/session artifacts
+.playwright-mcp/
+.open-mem/
+
+# open-mem: Auto-generated folder context files.
+# Uncomment to exclude from version control (recommended for large projects):
+# **/AGENTS.md

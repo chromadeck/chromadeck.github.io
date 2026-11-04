@@ -1,0 +1,265 @@
+@import "tailwindcss";
+
+/* Fonts — bundled, offline (mirrors the desktop app) */
+@import "@fontsource/geist/400.css";
+@import "@fontsource/geist/600.css";
+@import "@fontsource/geist/700.css";
+@import "@fontsource-variable/jetbrains-mono";
+
+/* Tokens copied from ChromaDeck DESIGN.md (Flat Dark Minimal, v0.8.2) */
+@theme {
+  --color-background: #060608;
+  --color-surface: #0d0e11;
+  --color-surface-raised: #15161a;
+  --color-surface-hover: #1b1d22;
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-border-hover: rgba(255, 255, 255, 0.12);
+  --color-foreground: #f4f1ea;
+  --color-muted: #a1a7af;
+  --color-subtle: #858b94;
+  --color-primary: #5eead4;
+  --color-primary-foreground: #060608;
+  --color-primary-subtle: rgba(94, 234, 212, 0.12);
+  --color-primary-border: rgba(94, 234, 212, 0.3);
+  --color-destructive: #ef4444;
+  --color-danger: #f87171;
+
+  --font-sans: "Geist", system-ui, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono Variable", Consolas, monospace;
+
+  --radius-card: 8px;
+
+  --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+  background: var(--color-background);
+  color-scheme: dark;
+}
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+::selection {
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+}
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Section eyebrow: mono, uppercase, no extra tracking (DESIGN.md) */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Flat card architecture: outer p-2 hairline, inner p-4 hover hairline */
+.card {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: 8px;
+  transition: border-color 150ms var(--ease-standard);
+}
+.card:hover {
+  border-color: var(--color-border-hover);
+}
+
+/* Product screenshots: hairline frame, no shadow */
+.shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid var(--color-border-hover);
+  background: var(--color-surface);
+}
+
+/* Signature 1px press */
+.press {
+  transition:
+    translate 120ms var(--ease-out),
+    background-color 150ms var(--ease-standard),
+    border-color 150ms var(--ease-standard);
+}
+.press:active {
+  translate: 0 1px;
+}
+.press:hover .press-icon {
+  translate: 3px 0;
+}
+.press-icon {
+  transition: translate 150ms var(--ease-out);
+}
+
+/* Button content scales up on hover instead of color change */
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+  transition: scale 150ms var(--ease-standard);
+}
+.press:hover .btn-content {
+  scale: 1.06;
+}
+
+/* Nav link — sliding underline on hover */
+.nav-link {
+  position: relative;
+  transition: color 150ms var(--ease-standard);
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-primary);
+  transition: width 150ms var(--ease-fluid);
+}
+.nav-link:hover {
+  color: var(--color-foreground);
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Feature card hover — tag scales slightly, border brightens more */
+.card:hover .tag-scale {
+  translate: 0 -1px;
+  scale: 1.06;
+}
+
+/* Chip — subtle lift on hover */
+.chip {
+  transition:
+    translate 150ms var(--ease-standard),
+    background-color 150ms var(--ease-standard),
+    border-color 150ms var(--ease-standard);
+}
+.chip:hover {
+  translate: 0 -1px;
+}
+
+/* Showcase tab — spring scale on active, subtle scale down when inactive */
+.tab-btn {
+  transition:
+    scale 150ms var(--ease-spring),
+    background-color 150ms var(--ease-standard),
+    border-color 150ms var(--ease-standard);
+}
+.tab-btn:not([aria-pressed="true"]):hover {
+  scale: 1.02;
+}
+.tab-btn[aria-pressed="true"] {
+  scale: 1.03;
+}
+
+/* Mobile menu items — staggered slide-in on open */
+.mobile-menu-item {
+  opacity: 0;
+  translate: 0 6px;
+  transition:
+    opacity 150ms var(--ease-fluid),
+    translate 150ms var(--ease-fluid);
+  transition-delay: var(--mobile-delay, 0ms);
+}
+.mobile-menu.is-open .mobile-menu-item {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Before/After divider — subtle pulse when idle */
+.ba-divider {
+  transition: translate 100ms var(--ease-out);
+}
+.ba-divider:hover {
+  translate: -50% -2px;
+  scale: 1.15;
+}
+
+/* Hero text line — subtle mint glow on hover (flat, no blur) */
+.hero-glow {
+  position: relative;
+  transition: color 250ms var(--ease-fluid);
+}
+.hero-glow:hover {
+  color: #7ff0dd;
+}
+
+/* Hero entrance — staged, plays once */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.enter {
+  opacity: 0;
+  animation: rise 350ms var(--ease-fluid) forwards;
+  animation-delay: var(--d, 0ms);
+}
+.enter-slow {
+  opacity: 0;
+  animation: rise 600ms var(--ease-fluid) forwards;
+  animation-delay: var(--d, 0ms);
+}
+
+/* Scroll reveal (one-way: a reveal is a state change, not a loop) */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 400ms var(--ease-fluid),
+    transform 400ms var(--ease-fluid);
+  transition-delay: var(--stagger-ms, 0ms);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Showcase tab panel crossfade */
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.fade-in {
+  animation: fade 250ms var(--ease-standard);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .enter,
+  .enter-slow,
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

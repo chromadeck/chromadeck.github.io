@@ -1,111 +1,60 @@
-import { useEffect, useState, type CSSProperties } from "react";
-import { ArrowRight, Download, ExternalLink } from "lucide-react";
-import { fetchLatestRelease } from "../lib/releases";
+"use client";
+import type { CSSProperties } from "react";
+import { Button, useRelease } from "./ui";
+import { REPO_URL } from "../lib/releases";
+
+const d = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
 export function Hero() {
-  const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-    fetchLatestRelease().then((r) => {
-      if (!cancelled) {
-        setDownloadUrl(r.msi?.browser_download_url ?? null);
-        setLoading(false);
-      }
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
+  const release = useRelease();
   return (
-    <section
-      id="hero"
-      className="relative overflow-hidden pt-24 pb-16 md:pt-28 md:pb-20"
-    >
-      <div className="mx-auto max-w-[1400px] px-6 grid md:grid-cols-2 gap-12 items-center">
-        {/* Left copy */}
-        <div className="flex flex-col gap-6 max-w-[540px]">
-          <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-none tracking-tighter text-ink">
-            <span className="hero-line">
-              <span style={{ "--hero-delay": "0ms" } as CSSProperties}>
-                Per-monitor color
-              </span>
-            </span>
-            <span className="hero-line">
-              <span style={{ "--hero-delay": "80ms" } as CSSProperties}>
-                <span className="bg-primary px-2 border border-border shadow-brutal-sm">
-                  pinned
-                </span>
-              </span>
-            </span>
+    <section id="top" className="pt-32 sm:pt-40">
+      <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
+        <p className="eyebrow enter" style={d(0)}>
+          Display control / made simple
+        </p>
+
+        <div className="mt-8 grid gap-10 lg:grid-cols-[1.25fr_1fr] lg:items-end lg:gap-20">
+          <h1 className="enter text-[40px] leading-[1.15] font-semibold tracking-[-0.03em] text-foreground sm:text-[52px] sm:leading-[1.05] sm:tracking-[-0.04em] lg:text-[76px] lg:leading-[0.98] lg:tracking-[-0.045em]" style={d(60)}>
+            Your display.
+            <br />
+            Your colours.
+            <br />
+            <span className="hero-glow text-primary">Your control.</span>
           </h1>
-          <p
-            className="hero-item text-base md:text-lg leading-relaxed text-muted-foreground max-w-[65ch]"
-            style={{ "--hero-delay": "160ms" } as CSSProperties}
-          >
-            Save color presets — brightness, contrast, gamma, RGB
-            gains, digital vibrance, hue, and ICC profiles — and apply, pin,
-            or enforce them per monitor from a single deck-style UI.
-          </p>
 
-          <div
-            className="hero-item flex flex-wrap items-center gap-4"
-            style={{ "--hero-delay": "240ms" } as CSSProperties}
-          >
-            {loading ? (
-              <span className="rounded-lg bg-muted px-6 py-3 border border-border">
-                <span className="animate-pulse size-3 rounded-full bg-primary" />
-              </span>
-            ) : downloadUrl ? (
-              <a
-                href={downloadUrl}
-                className="group inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-display font-semibold text-primary-foreground border border-border shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms] ease-[var(--ease-out)]"
-              >
-                <Download className="size-5" strokeWidth={2} />
-                Download MSI
-                <ArrowRight className="size-4 transition-transform duration-200 ease-[var(--ease-out)] group-hover:translate-x-1" strokeWidth={2.5} />
-              </a>
-            ) : (
-              <a
-                href="https://github.com/miiidev/ChromaDeck/releases"
-                className="inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-display font-semibold text-primary-foreground border border-border shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms] ease-[var(--ease-out)]"
-              >
-                View releases
-              </a>
-            )}
-            <a
-              href="https://github.com/miiidev/ChromaDeck"
-              className="inline-flex items-center gap-2 rounded-lg border border-border bg-secondary px-5 py-2.5 font-display text-sm text-ink shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms] ease-[var(--ease-out)]"
-            >
-              <ExternalLink className="size-5" strokeWidth={2} />
-              GitHub
-            </a>
+          <div className="enter lg:pb-2" style={d(120)}>
+            <p className="max-w-[48ch] text-[18px] leading-relaxed text-muted sm:text-[20px]">
+              ChromaDeck is a free Windows utility for building display colour presets and
+              applying them per monitor — brightness, contrast, gamma, RGB gains, vibrance and
+              hue, saved once and switched in a click.
+            </p>
+            <div className="mt-9 flex flex-wrap gap-4">
+              <Button href="#download">Download ChromaDeck</Button>
+              <Button href={REPO_URL} variant="ghost" external icon={false}>
+                Explore on GitHub
+              </Button>
+            </div>
+            <p className="mt-6 font-mono text-[12px] text-subtle">
+              {release.tag} stable · Windows 10/11 x64 · MIT licensed
+            </p>
           </div>
-
-          <p
-            className="hero-item text-[10px] font-mono text-muted-foreground tracking-wide leading-snug"
-            style={{ "--hero-delay": "320ms" } as CSSProperties}
-          >
-            Windows 10/11 x64 · WebView2 · NVIDIA GPU recommended for full
-            NVCP-native engine
-          </p>
         </div>
 
-        {/* Right real app screenshot */}
-        <div className="flex flex-col items-center gap-3">
+        <figure className="enter-slow mt-18 sm:mt-24" style={d(220)}>
           <img
-            src="/app-library.png"
-            alt="The ChromaDeck preset library deck"
-            className="shot-reveal w-full max-w-[640px] rounded-2xl border border-border shadow-brutal"
-            loading="eager"
+            src="/app/dashboard.png"
+            width={2560}
+            height={1600}
+            alt="ChromaDeck main window: a monitor dashboard with three displays, one with the Warm Cinema preset applied, above a horizontal library of colour presets and a status bar with Autostart and Reapply."
+            className="shot"
+            fetchPriority="high"
           />
-          <p className="font-mono text-[10px] text-muted-foreground tracking-wide">
-            The real ChromaDeck library deck — v0.8.0 light neobrutalist theme.
-          </p>
-        </div>
+          <figcaption className="mt-4 flex flex-wrap justify-between gap-3 font-mono text-[11px] text-subtle">
+            <span>Main window — monitor dashboard above the preset library</span>
+            <span>v0.8.2 interface · sample data</span>
+          </figcaption>
+        </figure>
       </div>
     </section>
   );

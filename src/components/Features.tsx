@@ -1,94 +1,75 @@
+"use client";
 import { Reveal } from "./Reveal";
 
 const FEATURES = [
   {
-    icon: "●",
-    title: "EDID Pin",
-    desc: "Presets bind to display EDID — survives docking, reconnects, and reboots. Every monitor keeps its own assignment.",
+    id: "preset-management",
+    eyebrow: "Presets",
+    title: "Preset management",
+    body: "Create named colour presets with brightness, contrast, gamma, RGB gains, vibrance and hue. Name them, give them a colour tag and category, and keep them organised.",
+    badge: "movie-badge",
+    tag: "Applied to LG UltraGear",
+    className: "border-border-hover",
+    activeVariant: true,
   },
   {
-    icon: "■",
-    title: "NVCP-native engine",
-    desc: "Brightness, contrast, gamma use NVIDIA's own transfer math and driver API. Results match the NVIDIA Control Panel exactly.",
+    id: "multi-monitor",
+    eyebrow: "Displays",
+    title: "Multi-monitor management",
+    body: "Enumerate every connected display through one interface. Serials are shown alongside names so each physical screen stays identifiable, including offline monitors.",
+    badge: "dell-badge",
+    tag: "Default",
+    className: "border-border",
   },
   {
-    icon: "▲",
-    title: "Vibrance & Hue",
-    desc: "Digital vibrance and hue driven through the NVIDIA driver — same control as NVCP, with per-display support detection.",
+    id: "apply-pin",
+    eyebrow: "Apply",
+    title: "Apply, pin and enforce",
+    body: "Apply a preset to the appropriate display, pin it so it survives reboots and standby, and let ChromaDeck re-apply in the background (polling approximately every 10 seconds).",
+    badge: "pin-badge",
+    tag: "Pinned · reapply every 10s",
+    className: "border-border-hover",
+    activeVariant: false,
   },
   {
-    icon: "◆",
-    title: "ICC Profiles",
-    desc: "Bundle .icc / .icm files into presets and associate them per monitor. Full color pipeline in one tap.",
-  },
-  {
-    icon: "⬡",
-    title: "Pin & Enforce",
-    desc: "Pin one preset per monitor. A background loop restores it if games, HDR toggles, or driver updates stomp it.",
-  },
-  {
-    icon: "↗",
-    title: "Import NVCP State",
-    desc: "Capture the driver's live color state straight into a new preset — no need to match settings by hand.",
-  },
-  {
-    icon: "◎",
-    title: "Apply dialog",
-    desc: "Preset pad or Apply… opens a dialog: pick the target monitor (your last target per preset is remembered), toggle Pin, then Apply.",
-  },
-  {
-    icon: "◐",
-    title: "Reset, duplicate, delete",
-    desc: "Full-default reset (and unpins), one-click duplicate, delete with confirmation — plus Select for multi-delete from the deck toolbar.",
-  },
-  {
-    icon: "▦",
-    title: "Identify + IN USE",
-    desc: "Identify flashes every monitor's number on screen. Cards show IN USE while pinned or applied on a connected monitor.",
-  },
-  {
-    icon: "○",
-    title: "Empty by default",
-    desc: "Fresh installs start with an idle library: no seeded preset, nothing pinned or applied. Highlighting always means a real user action.",
-  },
-  {
-    icon: "◫",
-    title: "Tray-native window",
-    desc: "Closing hides to the tray (right-click: Show / Reapply now / Quit); every re-open replays the staged load animation. Footer shows preset/monitor/pin counts, Reapply, and the Start with Windows toggle.",
+    id: "workflow",
+    eyebrow: "Workflow",
+    title: "Convenient daily workflow",
+    body: "Start with Windows, reapply on demand, reset a monitor to defaults and probe its current state — all from the app shell without opening nested driver menus.",
+    badge: "reapply-badge",
+    tag: "Autostart · reapply",
+    className: "border-border",
+    activeVariant: false,
   },
 ];
 
 export function Features() {
   return (
-    <section
-      id="features"
-      className="py-20 md:py-24"
-    >
-      <div className="mx-auto max-w-[1400px] px-6">
-        <div className="mb-10 md:mb-14 text-center">
-          <h2 className="font-display text-3xl md:text-4xl font-bold tracking-tight text-ink">
-            Everything in one deck
+    <section id="features" aria-labelledby="features-title" className="py-30 sm:py-40 border-y border-border">
+      <div className="mx-auto max-w-[720px] px-6 sm:px-10">
+        <Reveal>
+          <p className="eyebrow">What it does</p>
+          <h2 id="features-title" className="mt-4 text-[36px] leading-[1.1] font-semibold tracking-[-0.05em] text-foreground sm:text-[52px]">
+            Features
           </h2>
-          <p className="text-base text-muted-foreground max-w-[65ch] mx-auto mt-3 leading-relaxed">
-            No registry spelunking, no NVCP tabs. One preset deck to rule every
-            display.
+          <p className="mt-6 text-[17px] leading-relaxed text-muted sm:text-[19px]">
+            Build once, apply anywhere. Every display gets its own colour without nested driver menus.
           </p>
-        </div>
+        </Reveal>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {FEATURES.map((f, i) => (
-            <Reveal key={f.title} staggerMs={Math.min(i, 4) * 60}>
-            <div className="rounded-2xl bg-card border border-border p-6 shadow-brutal transition-all duration-[90ms] ease-[var(--ease-out)] hover:shadow-[6px_6px_0_#000] active:translate-y-[4px] active:shadow-none h-full">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-primary font-mono text-sm">{f.icon}</span>
-                <h3 className="font-display text-lg font-semibold text-ink">
-                  {f.title}
-                </h3>
+        <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:gap-10">
+          {FEATURES.map((f) => (
+            <Reveal key={f.id} staggerMs={70} className="card p-8">
+              <p className="eyebrow mb-3">{f.eyebrow}</p>
+              <h3 className="text-[20px] leading-tight font-semibold tracking-[-0.03em] text-foreground sm:text-[24px]">
+                {f.title}
+              </h3>
+              <p className="mt-3 text-[16px] leading-relaxed text-muted sm:text-[18px]">{f.body}</p>
+              <div className="mt-6 flex items-end gap-2">
+                <span className={`tag-scale font-mono text-[10px] tracking-wider text-subtle font-normal ${f.activeVariant ? "text-foreground" : ""}`}>
+                  {f.tag}
+                </span>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {f.desc}
-              </p>
-            </div>
             </Reveal>
           ))}
         </div>

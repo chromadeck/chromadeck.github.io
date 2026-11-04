@@ -1,70 +1,108 @@
+"use client";
 import { useEffect, useState } from "react";
-import { fetchLatestRelease } from "../lib/releases";
+import { Menu, X } from "lucide-react";
+import { Logo } from "./ui";
+import { REPO_URL } from "../lib/releases";
+
+const LINKS = [
+  { href: "#why-it-exists", label: "Why it exists" },
+  { href: "#features", label: "Features" },
+  { href: "#how-it-works", label: "How it works" },
+  { href: "#video", label: "Video" },
+  { href: "#requirements", label: "Requirements" },
+];
 
 export function Nav() {
-  const [version, setVersion] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    let cancelled = false;
-    fetchLatestRelease().then((r) => {
-      if (!cancelled) setVersion(r.tag);
-    });
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onResize = () => window.innerWidth >= 1024 && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
     return () => {
-      cancelled = true;
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
     };
-  }, []);
+  }, [open]);
+
+  const close = () => setOpen(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-paper/80 backdrop-blur-sm">
-      <div className="mx-auto max-w-[1400px] flex items-center justify-between px-6 py-3">
-        <div className="flex items-center gap-3">
-          <svg className="size-8" viewBox="0 0 32 32" aria-label="ChromaDeck">
-            <rect x="0" y="0" width="32" height="32" rx="4" fill="#FBF7F3" />
-            <rect x="4" y="4" width="24" height="24" rx="3" fill="#ECE7DC" />
-            <circle cx="16" cy="16" r="6" fill="#3DDC97" />
-            <rect x="9" y="12" width="6" height="8" rx="1" fill="#000000" opacity="0.6" />
-          </svg>
-          <span
-            className="font-display text-xl font-semibold tracking-tight text-ink"
-          >
-            ChromaDeck
-          </span>
-          {version ? (
-            <span className="inline-flex items-center gap-1.5 rounded-lg bg-muted px-2 py-0.5 text-[10px] font-mono leading-none uppercase tracking-wider text-muted-foreground border border-border">
-              {version}
-            </span>
-          ) : (
-            <span className="inline-flex items-center gap-1.5 rounded-lg bg-muted px-2 py-0.5 border border-border">
-              <span className="animate-pulse size-2 rounded-full bg-primary" />
-            </span>
-          )}
-        </div>
-        <div className="flex items-center gap-2 md:gap-3">
-          <div className="hidden md:flex items-center gap-5 mr-2">
-            {[
-              ["Compare", "#compare"],
-              ["Tour", "#tour"],
-              ["Features", "#features"],
-              ["How it works", "#how-it-works"],
-              ["Download", "#download"],
-            ].map(([label, href]) => (
-              <a
-                key={href}
-                href={href}
-                className="relative font-mono text-[11px] uppercase tracking-widest text-muted-foreground transition-colors duration-200 ease-[var(--ease-out)] hover:text-ink after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:bg-ink after:transition-transform after:duration-200 after:ease-[var(--ease-out)] hover:after:scale-x-100"
-              >
-                {label}
-              </a>
-            ))}
-          </div>
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background">
+      <nav aria-label="Primary" className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-6 sm:px-10">
+        <a href="#top" className="flex items-center gap-3" aria-label="ChromaDeck home" onClick={close}>
+          <Logo size={24} />
+          <span className="text-[18px] font-semibold tracking-[-0.03em] text-foreground">ChromaDeck</span>
+        </a>
+
+        <div className="hidden items-center gap-2 lg:flex">
+          {LINKS.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="nav-link rounded-[8px] px-4 py-2.5 text-[14px] text-muted hover:text-foreground"
+            >
+              {l.label}
+            </a>
+          ))}
           <a
-            href="https://github.com/miiidev/ChromaDeck/releases"
-            className="inline-flex items-center rounded-lg bg-primary px-3 py-1.5 font-display text-xs font-semibold text-primary-foreground border border-border shadow-brutal-sm hover:shadow-brutal active:translate-y-[2px] active:shadow-none transition-all duration-[90ms] ease-[var(--ease-out)]"
+            href={REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-link rounded-[8px] px-4 py-2.5 text-[14px] text-muted hover:text-foreground"
+          >
+            GitHub
+          </a>
+          <a
+            href="#download"
+            className="press ml-4 inline-flex h-11 items-center rounded-[8px] bg-primary px-5 text-[14px] font-semibold text-primary-foreground"
           >
             Download
           </a>
         </div>
+
+        <button
+          type="button"
+          className="grid size-12 place-items-center rounded-[8px] text-foreground lg:hidden"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? "Close menu" : "Open menu"}
+          onClick={() => setOpen((o) => !o)}
+        >
+          {open ? <X size={22} /> : <Menu size={22} />}
+        </button>
+      </nav>
+
+      <div
+        id="mobile-menu"
+        className={`mobile-menu border-t border-border bg-background px-6 pb-8 lg:hidden ${open ? "is-open" : "hidden"}`}
+        aria-expanded={open}
+      >
+        <ul className="flex flex-col py-3">
+          {[...LINKS, { href: REPO_URL, label: "GitHub" }].map((l, i) => (
+            <li key={l.href}>
+              <a
+                href={l.href}
+                onClick={close}
+                className="mobile-menu-item flex h-14 items-center border-b border-border text-[16px] text-foreground"
+                style={{ "--mobile-delay": `${i * 40}ms` } as any}
+                {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a
+          href="#download"
+          onClick={close}
+          className="press mt-5 flex h-12 items-center justify-center rounded-[8px] bg-primary text-[14px] font-semibold text-primary-foreground"
+        >
+          Download for Windows
+        </a>
       </div>
-    </nav>
+    </header>
   );
 }

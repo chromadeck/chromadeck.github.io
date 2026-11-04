@@ -1,50 +1,49 @@
+import { Logo, Button } from "./ui";
+
 export function Footer() {
   return (
-    <footer className="border-t border-border py-8 md:py-10">
-      <div className="mx-auto max-w-[1400px] px-6">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <svg className="size-6" viewBox="0 0 32 32" aria-label="ChromaDeck">
-              <rect x="0" y="0" width="32" height="32" rx="4" fill="#FBF7F3" />
-              <circle cx="16" cy="16" r="6" fill="#3DDC97" />
-            </svg>
-            <span className="font-display text-sm font-semibold text-ink">
-              ChromaDeck
-            </span>
-            <span className="font-mono text-[10px] text-muted-foreground">
-              MIT
-            </span>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="https://github.com/miiidev/ChromaDeck/releases"
-              className="font-mono text-[11px] text-muted-foreground hover:text-ink transition-colors duration-200 ease-[var(--ease-out)]"
-            >
-              Releases
+    <footer className="border-t border-border bg-background">
+      <div className="mx-auto max-w-[1200px] px-6 sm:px-10 py-10">
+        <div className="flex items-center gap-3 mb-6">
+          <Logo size={24} />
+          <span className="text-[17px] font-semibold tracking-[-0.03em] text-foreground">ChromaDeck</span>
+        </div>
+        <p className="text-[15px] leading-relaxed text-muted max-w-[64ch] mb-8">
+          A free per-monitor display colour manager for Windows. Build colour presets once,
+          apply and pin them per display.
+        </p>
+        <nav className="flex flex-wrap gap-6 font-mono text-[11px] uppercase">
+          <a href="#top" className="hover:text-foreground underline decoration-border-hover underline-offset-2">
+            Home
+          </a>
+          <a href="#features" className="hover:text-foreground underline decoration-border-hover underline-offset-2">
+            Features
+          </a>
+          <a href="#download" className="hover:text-foreground underline decoration-border-hover underline-offset-2">
+            Download
+          </a>
+          <a
+            href="https://github.com/miiidev/ChromaDeck"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground underline decoration-border-hover underline-offset-2"
+          >
+            Source
+          </a>
+        </nav>
+        <div className="mt-10 border-t border-border pt-8 flex flex-wrap justify-between gap-4">
+          <span className="font-mono text-[11px] text-subtle">
+            © 2026 ChromaDeck · MIT License
+          </span>
+          <div className="flex items-center gap-6 font-mono text-[11px] text-subtle">
+            <a href="#top" className="underline decoration-border-hover underline-offset-2 hover:text-foreground">
+              GitHub
             </a>
-            <span className="font-mono text-[10px] text-muted-foreground">·</span>
-            <a
-              href="https://github.com/miiidev/ChromaDeck"
-              className="font-mono text-[11px] text-muted-foreground hover:text-ink transition-colors duration-200 ease-[var(--ease-out)]"
-            >
-              Source
-            </a>
-            <span className="font-mono text-[10px] text-muted-foreground">·</span>
-            <a
-              href="https://github.com/miiidev/ChromaDeck/blob/master/LICENSE"
-              className="font-mono text-[11px] text-muted-foreground hover:text-ink transition-colors duration-200 ease-[var(--ease-out)]"
-            >
-              License
+            <a href="#download" className="press inline-flex h-11 items-center justify-center rounded-[8px] border border-border bg-surface px-5 text-[11px] font-medium transition-colors hover:bg-surface-hover">
+              Download
             </a>
           </div>
         </div>
-
-        <p className="font-mono text-[10px] text-muted-foreground mt-4 leading-snug">
-          Built with Tauri, React &amp; Tailwind CSS. Color engine references&nbsp;
-          <a href="https://github.com/pbatard/nvBrightness" className="underline decoration-border decoration-dotted underline-offset-2 hover:text-ink">nvBrightness</a>,
-          <a href="https://github.com/falahati/NvAPIWrapper" className="underline decoration-border decoration-dotted underline-offset-2 hover:text-ink">NvAPIWrapper</a>.
-        </p>
       </div>
     </footer>
   );
