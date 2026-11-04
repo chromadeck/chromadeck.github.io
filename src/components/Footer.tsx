@@ -1,48 +1,49 @@
-import { Logo, Button } from "./ui";
+import { Logo } from "./ui";
+
+const LINKS = [
+  { href: "#top", label: "Home" },
+  { href: "#features", label: "Features" },
+  { href: "#how-it-works", label: "How it works" },
+  { href: "#download", label: "Download" },
+];
 
 export function Footer() {
   return (
     <footer className="border-t border-border bg-background">
-      <div className="mx-auto max-w-[1200px] px-6 sm:px-10 py-10">
-        <div className="flex items-center gap-3 mb-6">
+      <div className="mx-auto max-w-[1200px] px-6 py-12 sm:px-10">
+        <div className="mb-6 flex items-center gap-3">
           <Logo size={24} />
-          <span className="text-[17px] font-semibold tracking-[-0.03em] text-foreground">ChromaDeck</span>
+          <span className="t-h3 text-foreground">ChromaDeck</span>
         </div>
-        <p className="text-[15px] leading-relaxed text-muted max-w-[64ch] mb-8">
+
+        <p className="t-body mb-8 max-w-[60ch] text-muted">
           A free per-monitor display colour manager for Windows. Build colour presets once,
           apply and pin them per display.
         </p>
-        <nav className="flex flex-wrap gap-6 font-mono text-[11px] uppercase">
-          <a href="#top" className="hover:text-foreground underline decoration-border-hover underline-offset-2">
-            Home
-          </a>
-          <a href="#features" className="hover:text-foreground underline decoration-border-hover underline-offset-2">
-            Features
-          </a>
-          <a href="#download" className="hover:text-foreground underline decoration-border-hover underline-offset-2">
-            Download
-          </a>
+
+        <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-2">
+          {LINKS.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              className="t-meta uppercase text-muted underline decoration-border-hover underline-offset-2 transition-colors hover:text-foreground"
+            >
+              {l.label}
+            </a>
+          ))}
           <a
             href="https://github.com/miiidev/ChromaDeck"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-foreground underline decoration-border-hover underline-offset-2"
+            className="t-meta uppercase text-muted underline decoration-border-hover underline-offset-2 transition-colors hover:text-foreground"
           >
             Source
           </a>
         </nav>
-        <div className="mt-10 border-t border-border pt-8 flex flex-wrap justify-between gap-4">
-          <span className="font-mono text-[11px] text-subtle">
-            © 2026 ChromaDeck · MIT License
-          </span>
-          <div className="flex items-center gap-6 font-mono text-[11px] text-subtle">
-            <a href="#top" className="underline decoration-border-hover underline-offset-2 hover:text-foreground">
-              GitHub
-            </a>
-            <a href="#download" className="press inline-flex h-11 items-center justify-center rounded-[8px] border border-border bg-surface px-5 text-[11px] font-medium transition-colors hover:bg-surface-hover">
-              Download
-            </a>
-          </div>
+
+        <div className="mt-10 flex flex-wrap justify-between gap-4 border-t border-border pt-8">
+          <span className="t-meta text-subtle">© 2026 ChromaDeck · MIT License</span>
+          <span className="t-meta text-subtle">Windows 10/11 x64</span>
         </div>
       </div>
     </footer>

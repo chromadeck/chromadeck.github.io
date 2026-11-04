@@ -1,6 +1,5 @@
 "use client";
 import { Reveal } from "./Reveal";
-import { ScrubHeading } from "./ScrubHeading";
 
 /** Requirements — what ChromaDeck needs and what it supports.
  *
@@ -55,15 +54,12 @@ export function Requirements() {
     <section id="requirements" aria-labelledby="requirements-title" className="py-30 sm:py-40">
       <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
         <Reveal>
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-5">
             <p className="eyebrow">Requirements &amp; support</p>
-            <ScrubHeading
-              id="requirements-title"
-              className="mt-1 text-[36px] leading-[1.1] font-semibold tracking-[-0.05em] text-foreground sm:text-[52px]"
-            >
+            <h2 id="requirements-title" className="t-h2 text-foreground">
               What you need to know
-            </ScrubHeading>
-            <p className="text-[17px] leading-relaxed text-muted sm:text-[19px]">
+            </h2>
+            <p className="t-lead text-muted">
               ChromaDeck is a Windows utility. These are the verified capabilities and limitations —
               nothing more is claimed.
             </p>
@@ -74,15 +70,11 @@ export function Requirements() {
           {REQUIREMENTS.map((r, i) => (
             <Reveal key={r.label} staggerMs={i * 40}>
               <div className="card h-full p-6">
-                <div className="flex items-baseline gap-2 mb-2">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-subtle">
-                    {r.label}
-                  </span>
+                <div className="mb-2 flex items-baseline gap-2">
+                  <span className="t-meta uppercase tracking-wider text-subtle">{r.label}</span>
                 </div>
-                <p className="text-[18px] leading-tight font-semibold tracking-[-0.03em] text-foreground sm:text-[20px]">
-                  {r.value}
-                </p>
-                <p className="mt-3 text-[13px] leading-relaxed text-muted">{r.note}</p>
+                <p className="t-h3 text-foreground">{r.value}</p>
+                <p className="mt-3 text-[var(--t-sm)] leading-relaxed text-muted">{r.note}</p>
               </div>
             </Reveal>
           ))}

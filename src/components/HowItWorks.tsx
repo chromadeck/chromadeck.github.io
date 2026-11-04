@@ -1,6 +1,5 @@
 "use client";
 import { Reveal } from "./Reveal";
-import { ScrubHeading } from "./ScrubHeading";
 
 const STEPS = [
   { n: "01", label: "Create", title: "Build your preset", body: "Set brightness, contrast, gamma, RGB gains, vibrance and hue, then save it with a name, colour tag and category." },
@@ -11,39 +10,40 @@ const STEPS = [
 export function HowItWorks() {
   return (
     <section id="how-it-works" aria-labelledby="how-title" className="py-30 sm:py-40 border-y border-border">
-      <div className="mx-auto max-w-[720px] px-6 sm:px-10">
+      <div className="mx-auto max-w-[760px] px-6 sm:px-10">
         <Reveal>
           <p className="eyebrow">Three steps</p>
-          <ScrubHeading
-            id="how-title"
-            className="mt-4 text-[36px] leading-[1.1] font-semibold tracking-[-0.05em] text-foreground sm:text-[52px]"
-          >
+          <h2 id="how-title" className="t-h2 mt-4 text-foreground">
             Build once, apply everywhere
-          </ScrubHeading>
-          <p className="mt-6 text-[17px] leading-relaxed text-muted sm:text-[19px]">
+          </h2>
+          <p className="t-lead mt-5 text-muted">
             Create a colour configuration once, keep it in your library and switch between displays in a click.
           </p>
         </Reveal>
-      </div>
 
-      <div className="mx-auto max-w-[720px] px-6 sm:px-10 mt-20 relative">
-        <div className="hidden lg:block absolute -left-[32px] top-[4px] bottom-[1px] w-[1px] bg-border" />
-        {STEPS.map((s) => (
-          <Reveal key={s.label} staggerMs={80} className="mb-24 last:mb-0">
-            <div className="grid items-start gap-5 sm:grid-cols-[60px_1fr] sm:items-center lg:grid-cols-[72px_1fr]">
-              <span className="font-mono text-[20px] font-semibold tracking-[-0.04em] text-primary">{s.n}</span>
-              <div className="flex items-center gap-4">
-                <span className={`font-mono text-[10px] uppercase tracking-wider ${s.label === "Apply" ? "border-primary-border bg-primary-subtle text-primary" : "border-border-hover text-muted"}`}>
+        <div className="relative mt-16">
+          <div className="absolute -left-[32px] top-1 bottom-1 hidden w-px bg-border lg:block" />
+          {STEPS.map((s, i) => (
+            <Reveal key={s.label} staggerMs={i * 80} className="mb-20 last:mb-0">
+              <div className="grid items-center gap-4 sm:grid-cols-[56px_1fr] lg:grid-cols-[64px_1fr]">
+                <span className="font-mono text-[var(--t-xl)] font-semibold tracking-[-0.04em] text-primary">
+                  {s.n}
+                </span>
+                <span
+                  className={`t-meta w-fit rounded-full border px-2.5 py-1 uppercase ${
+                    s.label === "Apply"
+                      ? "border-primary-border bg-primary-subtle text-primary"
+                      : "border-border-hover text-muted"
+                  }`}
+                >
                   {s.label}
                 </span>
               </div>
-            </div>
-            <h3 className="mt-2 text-[20px] leading-tight font-semibold tracking-[-0.03em] text-foreground sm:text-[24px]">
-              {s.title}
-            </h3>
-            <p className="mt-3 text-[16px] leading-relaxed text-muted sm:text-[18px]">{s.body}</p>
-          </Reveal>
-        ))}
+              <h3 className="t-h3 mt-3 text-foreground">{s.title}</h3>
+              <p className="t-body mt-3 text-muted">{s.body}</p>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

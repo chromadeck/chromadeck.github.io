@@ -1,13 +1,16 @@
 @import "tailwindcss";
 
-/* Fonts — bundled, offline (mirrors the desktop app) */
+/* Fonts — two families only, bundled and offline.
+   Geist for UI + display, JetBrains Mono for code/labels/counters.
+   Anybody and Newsreader were removed: four families was inconsistency, not
+   design. The reference's *feel* comes from spacing, weight and motion, not
+   from borrowing its typefaces. */
 @import "@fontsource/geist/400.css";
+@import "@fontsource/geist/500.css";
 @import "@fontsource/geist/600.css";
 @import "@fontsource/geist/700.css";
+@import "@fontsource/geist/800.css";
 @import "@fontsource-variable/jetbrains-mono";
-/* Reference DNA fonts (yusufyunus study): Anybody display + Newsreader serif */
-@import "@fontsource-variable/anybody";
-@import "@fontsource-variable/newsreader";
 
 /* Tokens copied from ChromaDeck DESIGN.md (Flat Dark Minimal, v0.8.2) */
 @theme {
@@ -220,18 +223,24 @@ body {
   animation-delay: var(--d, 0ms);
 }
 
-/* Scroll reveal (one-way: a reveal is a state change, not a loop) */
+/* Scroll reveal.
+   Fail-safe by construction: the DEFAULT state is visible. JS marks elements
+   that start below the fold with [data-pending], and removes the attribute
+   when they enter view. If JS never runs, or the observer never fires, the
+   content is still visible — it can never be stranded at opacity 0. */
 .reveal {
-  opacity: 0;
-  transform: translateY(12px);
-  transition:
-    opacity 400ms var(--ease-fluid),
-    transform 400ms var(--ease-fluid);
-  transition-delay: var(--stagger-ms, 0ms);
-}
-.reveal.is-visible {
   opacity: 1;
   transform: none;
+}
+.reveal[data-pending] {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.reveal {
+  transition-property: opacity, transform;
+  transition-duration: 480ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--stagger-ms, 0ms);
 }
 
 /* Showcase tab panel crossfade */
@@ -268,161 +277,121 @@ body {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Reference DNA tokens (yusufyunus study, DESIGN-ANALYSIS.md)
-   Prefixed --rx- / .rx- to coexist with the ChromaDeck DESIGN.md tokens above.
+   Type scale + motion primitives
+
+   Standardised on ChromaDeck's two families (Geist + JetBrains Mono). The
+   reference site's distinctive *feel* is reproduced through scale contrast,
+   tight tracking and eased motion — not by importing its typefaces.
+
+   Every step is a fluid clamp, so no breakpoint juggling for headings.
    ───────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* Type families */
-  --font-display: "Anybody Variable", "Geist", system-ui, sans-serif;
-  --font-serif: "Newsreader Variable", Georgia, serif;
+  /* Fluid type scale — one source of truth for every text size on the site */
+  --t-2xs: 0.6875rem;                            /* 11px  mono captions       */
+  --t-xs: 0.75rem;                               /* 12px  mono meta           */
+  --t-sm: 0.875rem;                              /* 14px  nav, small UI       */
+  --t-base: 1rem;                                /* 16px  body                */
+  --t-md: 1.0625rem;                             /* 17px  lead body           */
+  --t-lg: 1.1875rem;                             /* 19px  large body          */
+  --t-xl: 1.375rem;                              /* 22px  card titles         */
+  --t-2xl: clamp(1.5rem, 2.2vw, 1.75rem);        /* 24-28 section titles      */
+  --t-3xl: clamp(1.875rem, 3.4vw, 2.5rem);       /* 30-40 major headings      */
+  --t-4xl: clamp(2.25rem, 4.6vw, 3.25rem);       /* 36-52 page headings       */
+  --t-5xl: clamp(2.75rem, 6vw, 4.25rem);         /* 44-68 hero                */
 
-  /* Type scale — displays clamp for responsive scale without breakpoints */
-  --rx-t-xs: 0.8125rem;
-  --rx-t-sm: 0.9375rem;
-  --rx-t-md: 1.0625rem;
-  --rx-t-lg: 1.3125rem;
-  --rx-t-xl: 1.75rem;
-  --rx-t-2xl: clamp(2rem, 4vw, 2.75rem);
-  --rx-t-3xl: clamp(2.5rem, 6vw, 4.5rem);
-  --rx-t-4xl: clamp(3rem, 9vw, 7.5rem);
+  /* Line heights, paired to the scale */
+  --lh-tight: 1.05;
+  --lh-heading: 1.12;
+  --lh-snug: 1.35;
+  --lh-body: 1.62;
 
-  /* Layout */
-  --rx-gutter: clamp(16px, 4vw, 56px);
-  --rx-max: 1320px;
-  --rx-cw: min(52vw, 780px);
+  /* Tracking — heavier as size grows, the classic optical correction */
+  --tr-tight: -0.045em;
+  --tr-heading: -0.03em;
+  --tr-normal: -0.01em;
 
-  /* Radii */
-  --rx-radius-sm: 10px;
-  --rx-radius: 18px;
-  --rx-radius-lg: 28px;
-  --rx-pill: 999px;
+  /* Motion — the whole site's easing vocabulary, three curves only */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft: cubic-bezier(0.32, 0.72, 0, 1);
 
-  /* Motion */
-  --rx-ease: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* Z ladder (content → nav → dialog) */
-  --rx-z-content: 10;
-  --rx-z-nav: 50;
-  --rx-z-dialog: 80;
-
-  /* Semantic scene hues (Desk card headers / search categories) */
-  --rx-h-blue: #a8c7e6;
-  --rx-h-pink: #e8a3a8;
-  --rx-h-peri: #a9aee6;
-  --rx-h-mint: #a9d2b2;
-  --rx-h-amber: #e3c77f;
-  --rx-h-rose: #dea9c9;
+  /* Durations — short for state, medium for reveals, long for scroll-linked */
+  --dur-fast: 150ms;
+  --dur-base: 260ms;
+  --dur-slow: 480ms;
 }
 
-/* Dark palette (default — deep navy ink world) */
-:root,
-[data-rx-theme="dark"] {
-  --rx-bg: #0c0e1c;
-  --rx-bg-2: #11142a;
-  --rx-surface: #171a31;
-  --rx-surface-2: #1d2140;
-  --rx-text: #ecedf5;
-  --rx-muted: #a4a8c4;
-  --rx-line: rgba(236, 237, 245, 0.12);
-  --rx-line-strong: rgba(236, 237, 245, 0.26);
-  --rx-noise: #5d6190;
-  --rx-signal: #c77bff; /* violet signal accent (dark) */
-  --rx-signal-ink: #dba6ff;
-  --rx-ink: #14152b; /* text on light surfaces */
-  --rx-red: #d71f2b; /* crimson attention accent */
-  --rx-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 20px 50px -18px rgba(0, 0, 0, 0.7);
+/* Display + heading utilities, so components stop hard-coding font sizes */
+.t-display {
+  font-size: var(--t-5xl);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-tight);
+  font-weight: 700;
 }
-
-/* Light palette (paper world — the reference's default look) */
-[data-rx-theme="light"] {
-  --rx-bg: #f2f3f7;
-  --rx-bg-2: #eceef5;
-  --rx-surface: #ffffff;
-  --rx-surface-2: #f6f7fb;
-  --rx-text: #14152b;
-  --rx-muted: #5a5e7e;
-  --rx-line: rgba(20, 21, 43, 0.1);
-  --rx-line-strong: rgba(20, 21, 43, 0.24);
-  --rx-noise: #9aa0c8;
-  --rx-signal: #d71f2b;
-  --rx-signal-ink: #b3151f;
-  --rx-ink: #14152b;
-  --rx-red: #d71f2b;
-  --rx-shadow: 0 1px 2px rgba(20, 21, 43, 0.06), 0 20px 50px -18px rgba(20, 21, 43, 0.28);
-}
-
-/* Type utilities */
-.rx-font-display {
-  font-family: var(--font-display);
-}
-.rx-font-serif {
-  font-family: var(--font-serif);
-}
-
-/* Hero-scale display line: measured from the reference H1 (weight 820,
-   line-height 0.8x, tight tracking). Use on short all-caps-capable headlines. */
-.rx-display-1 {
-  font-family: var(--font-display);
-  font-size: var(--rx-t-4xl);
-  line-height: 0.82;
-  letter-spacing: -0.035em;
-  font-weight: 820;
-}
-
-.rx-display-2 {
-  font-family: var(--font-display);
-  font-size: var(--rx-t-3xl);
-  line-height: 0.9;
-  letter-spacing: -0.032em;
-  font-weight: 820;
-}
-
-/* Section headline (H2): giant sans + word-level scrub later */
-.rx-section-title {
-  font-family: var(--font-display);
-  font-size: var(--rx-t-2xl);
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  font-weight: 820;
-}
-
-/* Serif narration block */
-.rx-serif-lead {
-  font-family: var(--font-serif);
-  font-size: var(--rx-t-lg);
-  line-height: 1.5;
-  color: var(--rx-muted);
-}
-
-/* Pill chips — the reference's universal control */
-.rx-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 34px;
-  padding: 0 14px;
-  border-radius: var(--rx-pill);
-  font-family: var(--font-display);
-  font-size: 15px;
+.t-h1 {
+  font-size: var(--t-4xl);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tr-heading);
   font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1;
-  white-space: nowrap;
-  cursor: pointer;
 }
-.rx-chip--ink {
-  background: var(--rx-text);
-  color: var(--rx-ink);
-  border: 1px solid transparent;
+.t-h2 {
+  font-size: var(--t-3xl);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tr-heading);
+  font-weight: 600;
 }
-.rx-chip--line {
-  background: color-mix(in srgb, var(--rx-surface) 72%, transparent);
-  border: 1px solid var(--rx-line-strong);
-  color: var(--rx-text);
+.t-h3 {
+  font-size: var(--t-xl);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tr-normal);
+  font-weight: 600;
 }
-.rx-chip--tint {
-  background: color-mix(in srgb, var(--rx-surface) 88%, transparent);
-  border: 1px solid var(--rx-line);
-  color: var(--rx-text);
+.t-lead {
+  font-size: var(--t-lg);
+  line-height: var(--lh-body);
 }
+.t-body {
+  font-size: var(--t-base);
+  line-height: var(--lh-body);
+}
+.t-meta {
+  font-family: var(--font-mono);
+  font-size: var(--t-2xs);
+  letter-spacing: 0.02em;
+}
+
+/* Interaction smoothness.
+   Everything that changes state transitions on the same curves, so hovers,
+   reveals and focus feel like one system. Only compositor-friendly properties
+   are animated. Longhand + literal values because the minifier strips var()
+   inside the transition shorthand. */
+a,
+button,
+summary,
+[role="button"] {
+  transition-property: color, background-color, border-color, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Cards lift a hair rather than changing colour — reads as depth, not noise. */
+.card {
+  transition-property: border-color, transform, background-color;
+  transition-duration: 260ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Media settles in rather than popping. */
+.shot {
+  transition-property: transform;
+  transition-duration: 480ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+figure:hover .shot {
+  transform: scale(1.006);
+}
+

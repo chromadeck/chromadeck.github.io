@@ -1,6 +1,5 @@
 "use client";
 import { Reveal } from "./Reveal";
-import { ScrubHeading } from "./ScrubHeading";
 
 const FEATURES = [
   {
@@ -40,31 +39,29 @@ const FEATURES = [
 export function Features() {
   return (
     <section id="features" aria-labelledby="features-title" className="py-30 sm:py-40 border-y border-border">
-      <div className="mx-auto max-w-[720px] px-6 sm:px-10">
+      <div className="mx-auto max-w-[760px] px-6 sm:px-10">
         <Reveal>
           <p className="eyebrow">What it does</p>
-          <ScrubHeading
-            id="features-title"
-            className="mt-4 text-[36px] leading-[1.1] font-semibold tracking-[-0.05em] text-foreground sm:text-[52px]"
-            accent={["colour"]}
-          >
+          <h2 id="features-title" className="t-h2 mt-4 text-foreground">
             Features
-          </ScrubHeading>
-          <p className="mt-6 text-[17px] leading-relaxed text-muted sm:text-[19px]">
+          </h2>
+          <p className="t-lead mt-5 text-muted">
             Build once, apply anywhere. Every display gets its own colour without nested driver menus.
           </p>
         </Reveal>
 
-        <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:gap-10">
-          {FEATURES.map((f) => (
-            <Reveal key={f.id} staggerMs={70} className="card p-8">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:gap-8">
+          {FEATURES.map((f, i) => (
+            <Reveal key={f.id} staggerMs={i * 60} className="card p-8">
               <p className="eyebrow mb-3">{f.eyebrow}</p>
-              <h3 className="text-[20px] leading-tight font-semibold tracking-[-0.03em] text-foreground sm:text-[24px]">
-                {f.title}
-              </h3>
-              <p className="mt-3 text-[16px] leading-relaxed text-muted sm:text-[18px]">{f.body}</p>
-              <div className="mt-6 flex items-end gap-2">
-                <span className={`tag-scale font-mono text-[10px] tracking-wider text-subtle font-normal ${f.activeVariant ? "text-foreground" : ""}`}>
+              <h3 className="t-h3 text-foreground">{f.title}</h3>
+              <p className="t-body mt-3 text-muted">{f.body}</p>
+              <div className="mt-6">
+                <span
+                  className={`tag-scale t-meta tracking-wider font-normal ${
+                    f.activeVariant ? "text-foreground" : "text-subtle"
+                  }`}
+                >
                   {f.tag}
                 </span>
               </div>

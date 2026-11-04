@@ -39,7 +39,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    // suppressHydrationWarning on <html>: MotionProvider mirrors the
+    // reduced-motion preference onto this element, and browser extensions
+    // routinely inject attributes here before React hydrates. Neither is a
+    // render mismatch, so suppressing the warning on this one node is correct.
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />

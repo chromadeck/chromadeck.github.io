@@ -4,15 +4,17 @@ import { useEffect, type ReactNode } from "react";
 import { REDUCED_MOTION_QUERY, prefersReducedMotion, setupLenis } from "../../lib/motion";
 
 /**
- * MotionProvider — owns the two cross-cutting runtime concerns:
+ * MotionProvider — owns the cross-cutting runtime concerns.
  *
- * 1. Lenis smooth scrolling (+ GSAP ScrollTrigger sync), only when the user
- *    allows motion. Refcounted inside setupLenis, so StrictMode double-mounts
- *    are safe.
- * 2. The `data-rx-rm` mirror of prefers-reduced-motion, so CSS can opt out of
- *    smooth-scroll-specific styling without a JS branch.
+ * 1. Lenis smooth scrolling (+ GSAP ScrollTrigger sync), only when motion is
+ *    allowed. Refcounted inside setupLenis so StrictMode double-mounts are safe.
+ * 2. The `data-rx-rm` mirror of prefers-reduced-motion on <html>.
  *
- * Renders children unchanged; no extra DOM.
+ * Hydration note: every DOM mutation here happens inside useEffect, i.e. after
+ * hydration has completed. Nothing is written during render, so the client
+ * tree matches the server HTML. The <html> element also carries
+ * suppressHydrationWarning because extensions commonly inject attributes there
+ * before React boots — that is not a render mismatch we can fix.
  */
 
 let lenisRequested = false;
@@ -21,7 +23,6 @@ export function MotionProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Mirror the reduced-motion preference onto <html>.
     const mq = window.matchMedia(REDUCED_MOTION_QUERY);
     const applyRm = () => {
       document.documentElement.toggleAttribute("data-rx-rm", mq.matches);
@@ -29,9 +30,9 @@ export function MotionProvider({ children }: { children: ReactNode }) {
     applyRm();
     mq.addEventListener("change", applyRm);
 
-    // Start smooth scrolling once, when motion is allowed.
     let teardown: (() => void) | null = null;
     let cancelled = false;
+
     if (!prefersReducedMotion() && !lenisRequested) {
       lenisRequested = true;
       setupLenis().then((t) => {

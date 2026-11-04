@@ -94,10 +94,8 @@ export function SectionHead({
       <p className="eyebrow" id={id}>
         {label}
       </p>
-      <h2 className="mt-3 text-[28px] leading-[1.1] font-semibold tracking-[-0.04em] text-foreground sm:text-[40px]">
-        {title}
-      </h2>
-      {lead && <p className="mt-4 text-[15px] leading-relaxed text-muted sm:text-base">{lead}</p>}
+      <h2 className="t-h2 mt-3 text-foreground">{title}</h2>
+      {lead && <p className="t-body mt-4 text-muted">{lead}</p>}
     </div>
   );
 }
