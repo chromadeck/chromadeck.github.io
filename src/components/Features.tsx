@@ -1,5 +1,6 @@
 "use client";
 import { Reveal } from "./Reveal";
+import { ScrubText } from "./ScrubText";
 import { Layers, MonitorSmartphone, Pin, Zap } from "lucide-react";
 
 /**
@@ -59,19 +60,26 @@ export function Features() {
     >
       <div className="mx-auto max-w-[1100px] px-6 sm:px-10">
         <Reveal>
-          <p className="eyebrow">What it does</p>
+          <p className="chapter eyebrow">
+            <span>01</span>
+            <span>What it does</span>
+          </p>
           <h2 id="features-title" className="t-h2 mt-4 text-foreground">
             Features
           </h2>
-          <p className="t-lead mt-5 max-w-[62ch] text-muted">
-            Build once, apply anywhere. Every display gets its own colour without nested driver menus.
-          </p>
+          <ScrubText
+            className="mt-5 max-w-[62ch]"
+            lead
+            paragraphs={[
+              "Build once, apply anywhere. Every display gets its own colour without nested driver menus.",
+            ]}
+          />
         </Reveal>
 
         <div className="mt-12 grid gap-5 md:grid-cols-2">
           {FEATURES.map((f, i) => (
             <Reveal key={f.id} staggerMs={i * 70}>
-              <article className="card group flex h-full flex-col gap-4 p-6 sm:flex-row sm:gap-5 sm:p-7">
+              <article className="card lift group flex h-full flex-col gap-4 p-6 sm:flex-row sm:gap-5 sm:p-7">
                 <span
                   className={`grid size-10 shrink-0 place-items-center rounded-full border sm:size-11 ${
                     f.active

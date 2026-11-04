@@ -1,5 +1,6 @@
 "use client";
 import { Reveal } from "./Reveal";
+import { ScrubText } from "./ScrubText";
 
 const STEPS = [
   { n: "01", label: "Create", title: "Build your preset", body: "Set brightness, contrast, gamma, RGB gains, vibrance and hue, then save it with a name, colour tag and category." },
@@ -12,13 +13,20 @@ export function HowItWorks() {
     <section id="how-it-works" aria-labelledby="how-title" className="scroll-mt-24 border-y border-border py-24 sm:py-32">
       <div className="mx-auto max-w-[760px] px-6 sm:px-10">
         <Reveal>
-          <p className="eyebrow">Three steps</p>
+          <p className="chapter eyebrow">
+            <span>02</span>
+            <span>Three steps</span>
+          </p>
           <h2 id="how-title" className="t-h2 mt-4 text-foreground">
             Build once, apply everywhere
           </h2>
-          <p className="t-lead mt-5 text-muted">
-            Create a colour configuration once, keep it in your library and switch between displays in a click.
-          </p>
+          <ScrubText
+            className="mt-5"
+            lead
+            paragraphs={[
+              "Create a colour configuration once, keep it in your library and switch between displays in a click.",
+            ]}
+          />
         </Reveal>
 
         <div className="relative mt-16">

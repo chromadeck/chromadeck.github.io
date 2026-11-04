@@ -383,6 +383,64 @@ summary,
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Adopted motion devices
+   The reference site's interaction language applied to ChromaDeck's own
+   components. Everything here animates compositor-only properties.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* ScrubText units: start faint and low, JS settles them on scroll. The
+   transition makes reduced-motion and resize changes land softly. */
+.scrub-unit {
+  display: inline-block;
+  opacity: 1;
+  transition:
+    opacity 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.is-armed .scrub-unit {
+  opacity: 0.22;
+  transform: translateY(0.16em);
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-armed .scrub-unit {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Numbered chapter marker — the reference's "1 The work" device.
+   The rule wipes in from the left when the section enters. */
+.chapter {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.chapter::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--color-primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.is-visible .chapter::before,
+.reveal .chapter::before {
+  transform: scaleX(1);
+}
+
+/* Card lift: depth via transform, border brightens. No shadow, no blur. */
+.lift {
+  transition-property: transform, border-color, background-color;
+  transition-duration: 260ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lift:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-border-hover);
+}
+
 /* Cards lift a hair rather than changing colour — reads as depth, not noise. */
 .card {
   transition-property: border-color, transform, background-color;

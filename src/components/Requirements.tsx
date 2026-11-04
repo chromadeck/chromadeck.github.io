@@ -1,5 +1,6 @@
 "use client";
 import { Reveal } from "./Reveal";
+import { ScrubText } from "./ScrubText";
 
 /** Requirements — what ChromaDeck needs and what it supports.
  *
@@ -55,21 +56,26 @@ export function Requirements() {
       <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
         <Reveal>
           <div className="flex flex-col gap-5">
-            <p className="eyebrow">Requirements &amp; support</p>
+            <p className="chapter eyebrow">
+              <span>03</span>
+              <span>Requirements &amp; support</span>
+            </p>
             <h2 id="requirements-title" className="t-h2 text-foreground">
               What you need to know
             </h2>
-            <p className="t-lead text-muted">
-              ChromaDeck is a Windows utility. These are the verified capabilities and limitations —
-              nothing more is claimed.
-            </p>
+            <ScrubText
+              lead
+              paragraphs={[
+                "ChromaDeck is a Windows utility. These are the verified capabilities and limitations — nothing more is claimed.",
+              ]}
+            />
           </div>
         </Reveal>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {REQUIREMENTS.map((r, i) => (
             <Reveal key={r.label} staggerMs={i * 40}>
-              <div className="card h-full p-6">
+              <div className="card lift h-full p-6">
                 <div className="mb-2 flex items-baseline gap-2">
                   <span className="t-meta uppercase tracking-wider text-subtle">{r.label}</span>
                 </div>

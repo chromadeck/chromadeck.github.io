@@ -1,6 +1,8 @@
 "use client";
 import * as React from "react";
 import { useRelease, formatBytes, Button, Chip } from "./ui";
+import { Reveal } from "./Reveal";
+import { ScrubText } from "./ScrubText";
 
 const STABLE_TAG = "v0.8.1";
 
@@ -15,22 +17,32 @@ export function Download() {
     <section id="download" aria-labelledby="download-title" className="scroll-mt-24 border-y border-border py-24 sm:py-32">
       <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          <div>
-            <p className="eyebrow">Get ChromaDeck</p>
-            <h2 id="download-title" className="t-h2 mt-4 text-foreground">
-              Ready to take control of your display?
-            </h2>
-            <p className="t-lead mt-5 max-w-[52ch] text-muted">
-              Get ChromaDeck and start building your own display colour experience.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Chip active>Windows 10 / 11 x64</Chip>
-              <Chip active>MIT licensed</Chip>
-              <Chip active>Free</Chip>
+          <Reveal>
+            <div>
+              <p className="chapter eyebrow">
+                <span>05</span>
+                <span>Get ChromaDeck</span>
+              </p>
+              <h2 id="download-title" className="t-h2 mt-4 text-foreground">
+                Ready to take control of your display?
+              </h2>
+              <ScrubText
+                className="mt-5 max-w-[52ch]"
+                lead
+                paragraphs={[
+                  "Get ChromaDeck and start building your own display colour experience.",
+                ]}
+              />
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Chip active>Windows 10 / 11 x64</Chip>
+                <Chip active>MIT licensed</Chip>
+                <Chip active>Free</Chip>
+              </div>
             </div>
-          </div>
+          </Reveal>
 
-          <div className="rounded-[8px] border border-border bg-surface p-8">
+          <Reveal staggerMs={80}>
+            <div className="rounded-[8px] border border-border bg-surface p-8">
             <h3 className="t-h3 mb-6 text-foreground">{release.tag} — Windows x64</h3>
 
             <div className="flex flex-col gap-3">
@@ -83,7 +95,8 @@ export function Download() {
                 GitHub API unreachable — showing verified stable fallback: {STABLE_TAG}.
               </p>
             )}
-          </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
