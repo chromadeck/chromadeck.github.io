@@ -9,7 +9,7 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" aria-labelledby="how-title" className="py-30 sm:py-40 border-y border-border">
+    <section id="how-it-works" aria-labelledby="how-title" className="scroll-mt-24 border-y border-border py-24 sm:py-32">
       <div className="mx-auto max-w-[760px] px-6 sm:px-10">
         <Reveal>
           <p className="eyebrow">Three steps</p>

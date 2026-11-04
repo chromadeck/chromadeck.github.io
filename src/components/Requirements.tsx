@@ -51,7 +51,7 @@ const REQUIREMENTS = [
 
 export function Requirements() {
   return (
-    <section id="requirements" aria-labelledby="requirements-title" className="py-30 sm:py-40">
+    <section id="requirements" aria-labelledby="requirements-title" className="scroll-mt-24 py-24 sm:py-32">
       <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
         <Reveal>
           <div className="flex flex-col gap-5">

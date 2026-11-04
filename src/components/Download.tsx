@@ -12,7 +12,7 @@ export function Download() {
     a ? `${a.name} · ${formatBytes(a.size)}` : null;
 
   return (
-    <section id="download" aria-labelledby="download-title" className="py-30 sm:py-40 border-y border-border">
+    <section id="download" aria-labelledby="download-title" className="scroll-mt-24 border-y border-border py-24 sm:py-32">
       <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           <div>

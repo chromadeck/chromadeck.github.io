@@ -35,15 +35,15 @@ type BtnProps = {
   className?: string;
 };
 
-/** DESIGN.md button: 8px radius, 13px bold label, trailing icon nested in a disc. */
+/** DESIGN.md button: 8px radius, larger 14px bold label, trailing icon in a disc. */
 export function Button({ href, children, variant = "primary", external, icon = true, wrap = false, className = "" }: BtnProps) {
-  const size = wrap ? "min-h-11 py-2.5 whitespace-normal text-left" : "h-11 whitespace-nowrap";
-  const base = `press inline-flex items-center gap-3 rounded-[8px] text-[13px] font-semibold ${size} transition-colors`;
+  const size = wrap ? "min-h-[52px] py-3 whitespace-normal text-left" : "h-[52px] whitespace-nowrap";
+  const base = `press inline-flex items-center gap-3 rounded-[8px] text-[14px] font-semibold ${size} transition-colors`;
   const look =
     variant === "primary"
       ? "bg-primary text-primary-foreground"
       : "border border-border bg-surface text-foreground";
-  const pad = icon ? "pl-5 pr-1.5" : "px-5";
+  const pad = icon ? "pl-6 pr-2" : "px-6";
   return (
     <a
       href={href}
@@ -53,23 +53,23 @@ export function Button({ href, children, variant = "primary", external, icon = t
       <span className={`btn-content inline-flex items-center ${wrap ? "min-w-0 [overflow-wrap:anywhere]" : ""}`}>{children}</span>
       {icon && (
         <span
-          className={`press-icon grid size-8 place-items-center rounded-full ${
+          className={`press-icon grid size-9 place-items-center rounded-full ${
             variant === "primary" ? "bg-primary-foreground/10" : "bg-surface-hover"
           }`}
           aria-hidden="true"
         >
-          <ArrowRight size={14} strokeWidth={2.2} />
+          <ArrowRight size={15} strokeWidth={2.2} />
         </span>
       )}
     </a>
   );
 }
 
-/** Small mono pill, matches the app's badge. */
+/** Pill chip, matches the app's badge. Sized to read as a control, not a label. */
 export function Chip({ children, active }: { children: ReactNode; active?: boolean }) {
   return (
     <span
-      className={`chip inline-flex items-center rounded-full border px-2 py-[3px] font-mono text-[10px] uppercase leading-none ${
+      className={`chip inline-flex h-8 items-center rounded-full border px-3.5 font-mono text-[11px] uppercase leading-none tracking-[0.04em] ${
         active ? "border-primary-border bg-primary-subtle text-primary" : "border-border-hover text-muted"
       }`}
     >

@@ -58,18 +58,20 @@ export async function setupLenis(): Promise<Teardown> {
 
   const lenis = new (Lenis as unknown as new (
     options?: Record<string, unknown>,
-  ) => LenisLike)({ autoRaf: false });
+  ) => LenisLike)({
+    // Lenis drives its own rAF. Driving it from GSAP's ticker produced very
+    // slow, stuttering programmatic scrolls, so we let Lenis own the loop and
+    // only tell ScrollTrigger to re-read on each scroll.
+    autoRaf: true,
+    duration: 1.05,
+    easing: (t: number) => 1 - Math.pow(1 - t, 3), // easeOutCubic
+  });
 
   activeLenis = lenis;
   const steps: Teardown[] = [];
 
   // ScrollTrigger reads the Lenis-smoothed position.
   lenis.on("scroll", () => ScrollTrigger.update());
-
-  // Single rAF loop: GSAP's ticker advances Lenis.
-  const tick = (time: number) => lenis.raf(time * 1000);
-  gsap.ticker.add(tick);
-  steps.push(() => gsap.ticker.remove(tick));
 
   teardownSteps = steps;
   return () => release();
@@ -84,7 +86,7 @@ function release() {
   activeLenis = null;
 }
 
-/** Smooth-scroll to an element id, with or without Lenis. */
+/** Smooth-scroll to an element id, centring it in the viewport. */
 export function scrollToId(id: string) {
   if (typeof document === "undefined") return;
   const el = document.getElementById(id);
@@ -92,6 +94,28 @@ export function scrollToId(id: string) {
   if (activeLenis) {
     activeLenis.scrollTo(el, { offset: 0 });
   } else {
-    el.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    el.scrollIntoView({
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+      block: "center",
+    });
+  }
+}
+
+/**
+ * Centre an element in the viewport, accounting for the fixed header.
+ *
+ * Used for every in-page navigation (nav links, skip links, anchor buttons) so
+ * a section lands centred rather than flush under the header. Falls back to a
+ * native smooth scroll when Lenis is not running.
+ */
+export function scrollToElement(el: HTMLElement, extraOffset = 0) {
+  if (typeof document === "undefined") return;
+  const rect = el.getBoundingClientRect();
+  const centred = rect.top + window.scrollY - (window.innerHeight - rect.height) / 2;
+  const target = Math.max(0, centred + extraOffset);
+  if (activeLenis) {
+    activeLenis.scrollTo(target, { offset: 0 });
+  } else {
+    window.scrollTo({ top: target, behavior: prefersReducedMotion() ? "auto" : "smooth" });
   }
 }

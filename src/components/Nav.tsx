@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./ui";
 import { REPO_URL } from "../lib/releases";
+import { scrollToElement } from "../lib/motion";
 
 const LINKS = [
   { href: "#features", label: "Features" },
@@ -28,6 +29,17 @@ export function Nav() {
 
   const close = () => setOpen(false);
 
+  /** Centre the target section instead of aligning it under the header. */
+  const jump = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith("#")) return;
+    const target = document.getElementById(href.slice(1));
+    if (!target) return;
+    e.preventDefault();
+    scrollToElement(target);
+    close();
+    history.replaceState(null, "", href);
+  };
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
       <nav
@@ -44,12 +56,13 @@ export function Nav() {
           <span className="t-h3 text-foreground">ChromaDeck</span>
         </a>
 
-        <div className="hidden items-center gap-1 lg:flex">
+        <div className="hidden items-center gap-1.5 lg:flex">
           {LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="nav-link rounded-[8px] px-4 py-2.5 text-[var(--t-sm)] text-muted hover:text-foreground"
+              onClick={(e) => jump(e, l.href)}
+              className="nav-link inline-flex h-11 items-center rounded-full px-5 text-[var(--t-sm)] text-muted hover:text-foreground"
             >
               {l.label}
             </a>
@@ -58,13 +71,14 @@ export function Nav() {
             href={REPO_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="nav-link rounded-[8px] px-4 py-2.5 text-[var(--t-sm)] text-muted hover:text-foreground"
+            className="nav-link inline-flex h-11 items-center rounded-full px-5 text-[var(--t-sm)] text-muted hover:text-foreground"
           >
             GitHub
           </a>
           <a
             href="#download"
-            className="press ml-3 inline-flex h-10 items-center rounded-[8px] bg-primary px-5 text-[var(--t-sm)] font-semibold text-primary-foreground"
+            onClick={(e) => jump(e, "#download")}
+            className="press ml-3 inline-flex h-12 items-center rounded-full bg-primary px-7 text-[var(--t-sm)] font-semibold text-primary-foreground"
           >
             Download
           </a>
@@ -93,7 +107,10 @@ export function Nav() {
             <li key={l.href}>
               <a
                 href={l.href}
-                onClick={close}
+                onClick={(e) => {
+                  if (l.href.startsWith("#")) jump(e, l.href);
+                  else close();
+                }}
                 className="mobile-menu-item flex h-14 items-center border-b border-border text-[var(--t-base)] text-foreground"
                 style={{ "--mobile-delay": `${i * 40}ms` } as React.CSSProperties}
                 {...(l.href.startsWith("http")
@@ -107,8 +124,8 @@ export function Nav() {
         </ul>
         <a
           href="#download"
-          onClick={close}
-          className="press mt-5 flex h-12 items-center justify-center rounded-[8px] bg-primary text-[var(--t-sm)] font-semibold text-primary-foreground"
+          onClick={(e) => jump(e, "#download")}
+          className="press mt-5 flex h-12 items-center justify-center rounded-full bg-primary text-[var(--t-sm)] font-semibold text-primary-foreground"
         >
           Download for Windows
         </a>

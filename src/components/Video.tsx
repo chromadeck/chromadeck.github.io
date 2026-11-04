@@ -2,7 +2,7 @@
 
 export function Video() {
   return (
-    <section id="video" aria-labelledby="video-title" className="py-30 sm:py-40 border-y border-border">
+    <section id="video" aria-labelledby="video-title" className="scroll-mt-24 border-y border-border py-24 sm:py-32">
       <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
         <div className="flex flex-col gap-10">
           <div className="flex max-w-[620px] flex-col gap-5">
