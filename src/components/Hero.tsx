@@ -1,105 +1,24 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { Button, useRelease } from "./ui";
 import { REPO_URL } from "../lib/releases";
+import { ScrubText } from "./ScrubText";
+import { HeroHeading } from "./HeroHeading";
 
 /**
- * Hero — ChromaDeck copy, rendered in the reference DNA type system.
- *
- * The reference site's hero headline is split into per-letter spans and
- * animated in on load (ANIMATION-SPEC §L2). We keep ChromaDeck's own words
- * and apply the same treatment: three display lines, each revealed with a
- * per-letter stagger.
+ * Hero — ChromaDeck's own proposition, delivered with the reference's
+ * motion language: per-letter display entrance, then a scrubbed statement.
  */
-
-const LINES = [
-  ["Y", "o", "u", "r", " ", "d", "i", "s", "p", "l", "a", "y", "."],
-  ["Y", "o", "u", "r", " ", "c", "o", "l", "o", "u", "r", "s", "."],
-];
 
 export function Hero() {
   const release = useRelease();
-  const headingRef = useRef<HTMLHeadingElement | null>(null);
-  const playedRef = useRef(false);
-
-  useEffect(() => {
-    if (playedRef.current) return;
-    if (typeof window === "undefined") return;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const h1 = headingRef.current;
-    if (!h1) return;
-
-    const letters = Array.from(h1.querySelectorAll<HTMLElement>("[data-letter]"));
-
-    // Reduced motion: land on the final state immediately.
-    if (reduced) {
-      letters.forEach((el) => {
-        el.style.opacity = "1";
-        el.style.transform = "none";
-      });
-      playedRef.current = true;
-      return;
-    }
-
-    playedRef.current = true;
-    let cancelled = false;
-
-    import("gsap").then(({ gsap }) => {
-      if (cancelled) return;
-      gsap.set(letters, { opacity: 0, yPercent: 18 });
-      gsap.to(letters, {
-        opacity: 1,
-        yPercent: 0,
-        duration: 0.62,
-        ease: "power3.out",
-        stagger: 0.018,
-        delay: 0.08,
-      });
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   return (
     <section id="top" className="pt-32 sm:pt-40">
       <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
-        <p className="eyebrow enter" style={{ "--d": "0ms" } as React.CSSProperties}>
-          Display control / made simple
-        </p>
+        <p className="eyebrow">Display control / made simple</p>
 
-        <h1
-          ref={headingRef}
-          className="rx-display-1 mt-6 text-foreground"
-          aria-label="Your display. Your colours. Your control."
-        >
-          {LINES.map((line, li) => (
-            <span key={li} aria-hidden="true" className="block">
-              {line.map((ch, ci) => (
-                <span
-                  key={ci}
-                  data-letter
-                  style={{ display: "inline-block", willChange: "transform, opacity" }}
-                >
-                  {ch === " " ? "\u00A0" : ch}
-                </span>
-              ))}
-            </span>
-          ))}
-          <span aria-hidden="true" className="block text-[color:var(--rx-signal)]">
-            {"Your control.".split("").map((ch, ci) => (
-              <span
-                key={ci}
-                data-letter
-                style={{ display: "inline-block", willChange: "transform, opacity" }}
-              >
-                {ch === " " ? "\u00A0" : ch}
-              </span>
-            ))}
-          </span>
-        </h1>
+        <HeroHeading />
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[1.25fr_1fr] lg:items-end lg:gap-20">
           <p className="rx-font-serif max-w-[46ch] text-[19px] leading-relaxed text-muted sm:text-[21px]">
@@ -135,6 +54,17 @@ export function Hero() {
             <span>v0.8.2 interface · sample data</span>
           </figcaption>
         </figure>
+
+        {/* Scrubbed statement — ChromaDeck's own positioning line. */}
+        <ScrubText
+          className="mt-24 max-w-[900px] sm:mt-32"
+          display
+          accent={["display", "preset"]}
+          paragraphs={[
+            "One set of colour values should never have to serve every screen.",
+            "ChromaDeck keeps a preset per display, applies it in a click, and re-applies it when something else disturbs the ramp.",
+          ]}
+        />
       </div>
     </section>
   );

@@ -2,7 +2,6 @@
 
 import { Nav } from "../components/Nav";
 import { Hero } from "../components/Hero";
-import { PrologueScrub } from "../components/PrologueScrub";
 import { Features } from "../components/Features";
 import { HowItWorks } from "../components/HowItWorks";
 import { Download } from "../components/Download";
@@ -18,17 +17,6 @@ export default function Page() {
         <Nav />
         <main className="flex-1">
           <Hero />
-          <PrologueScrub
-            paragraphs={[
-              "Most of the internet is noise.",
-              "Music you didn’t ask for.",
-              "Posters that shout.",
-              "Emails nobody opens.",
-              "Bugs nobody can reproduce.",
-              "For the last few years I’ve been pulling the signal out of it.",
-            ]}
-            emphasis={["signal", "noise"]}
-          />
           <Features />
           <HowItWorks />
           <Video />

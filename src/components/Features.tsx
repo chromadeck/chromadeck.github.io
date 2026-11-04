@@ -1,5 +1,6 @@
 "use client";
 import { Reveal } from "./Reveal";
+import { ScrubHeading } from "./ScrubHeading";
 
 const FEATURES = [
   {
@@ -7,9 +8,7 @@ const FEATURES = [
     eyebrow: "Presets",
     title: "Preset management",
     body: "Create named colour presets with brightness, contrast, gamma, RGB gains, vibrance and hue. Name them, give them a colour tag and category, and keep them organised.",
-    badge: "movie-badge",
     tag: "Applied to LG UltraGear",
-    className: "border-border-hover",
     activeVariant: true,
   },
   {
@@ -17,18 +16,15 @@ const FEATURES = [
     eyebrow: "Displays",
     title: "Multi-monitor management",
     body: "Enumerate every connected display through one interface. Serials are shown alongside names so each physical screen stays identifiable, including offline monitors.",
-    badge: "dell-badge",
     tag: "Default",
-    className: "border-border",
+    activeVariant: false,
   },
   {
     id: "apply-pin",
     eyebrow: "Apply",
     title: "Apply, pin and enforce",
     body: "Apply a preset to the appropriate display, pin it so it survives reboots and standby, and let ChromaDeck re-apply in the background (polling approximately every 10 seconds).",
-    badge: "pin-badge",
-    tag: "Pinned · reapply every 10s",
-    className: "border-border-hover",
+    tag: "Pinned — reapply every 10s",
     activeVariant: false,
   },
   {
@@ -36,9 +32,7 @@ const FEATURES = [
     eyebrow: "Workflow",
     title: "Convenient daily workflow",
     body: "Start with Windows, reapply on demand, reset a monitor to defaults and probe its current state — all from the app shell without opening nested driver menus.",
-    badge: "reapply-badge",
-    tag: "Autostart · reapply",
-    className: "border-border",
+    tag: "Autostart — reapply",
     activeVariant: false,
   },
 ];
@@ -49,9 +43,13 @@ export function Features() {
       <div className="mx-auto max-w-[720px] px-6 sm:px-10">
         <Reveal>
           <p className="eyebrow">What it does</p>
-          <h2 id="features-title" className="mt-4 text-[36px] leading-[1.1] font-semibold tracking-[-0.05em] text-foreground sm:text-[52px]">
+          <ScrubHeading
+            id="features-title"
+            className="mt-4 text-[36px] leading-[1.1] font-semibold tracking-[-0.05em] text-foreground sm:text-[52px]"
+            accent={["colour"]}
+          >
             Features
-          </h2>
+          </ScrubHeading>
           <p className="mt-6 text-[17px] leading-relaxed text-muted sm:text-[19px]">
             Build once, apply anywhere. Every display gets its own colour without nested driver menus.
           </p>
