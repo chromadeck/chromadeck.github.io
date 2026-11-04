@@ -4,23 +4,26 @@ import { useEffect, useRef } from "react";
  * One-way scroll reveal, guaranteed to resolve.
  *
  * Design:
- * 1. CSS leaves content VISIBLE by default.
- * 2. The hook hides only elements genuinely below the fold at mount, using a
- *    `data-pending` attribute, then removes it when they come into view.
- * 3. A single shared rAF loop (one for the whole page, not one per element)
- *    re-checks pending elements while any remain. This matters because Lenis
- *    smooth scrolling does not dispatch native `scroll` events, so a
- *    scroll-listener-only approach leaves elements stranded. The loop stops
- *    as soon as nothing is pending.
- *
- * With no JS, no observer support, or reduced motion, nothing is ever hidden.
+ * 1. CSS leaves content VISIBLE by default. This hook hides only elements
+ *    genuinely below the fold at mount, then removes the flag when they enter
+ *    view — so no JS, a missed observer, or an error can never strand content
+ *    at opacity 0.
+ * 2. IntersectionObserver is the primary trigger. It is async and runs off the
+ *    critical path, so normal scrolling costs nothing.
+ * 3. A cheap safety-net timer backs it up (Lenis does not dispatch native
+ *    `scroll` events). It polls on an interval rather than every frame, so it
+ *    never forces per-frame layout reads — reading getBoundingClientRect() for
+ *    many elements each frame is exactly what makes scroll feel jittery.
+ *    The timer stops as soon as nothing is pending.
  */
 
-type Pending = { el: HTMLElement; done: () => void };
+type Pending = { el: HTMLElement };
 
 const registry = new Set<Pending>();
-let loopHandle = 0;
-let listening = false;
+let timer: number | null = null;
+
+/** Poll interval for the safety net — coarse on purpose. */
+const POLL_MS = 180;
 
 function inView(el: HTMLElement): boolean {
   const r = el.getBoundingClientRect();
@@ -28,34 +31,23 @@ function inView(el: HTMLElement): boolean {
   return r.top < vh * 0.94 && r.bottom > 0;
 }
 
-function tick() {
-  loopHandle = 0;
-  for (const entry of registry) {
+function poll() {
+  timer = null;
+  for (const entry of Array.from(registry)) {
     if (!entry.el.hasAttribute("data-pending")) {
       registry.delete(entry);
       continue;
     }
     if (inView(entry.el)) {
       entry.el.removeAttribute("data-pending");
-      entry.done();
       registry.delete(entry);
     }
   }
-  if (registry.size > 0) loopHandle = requestAnimationFrame(tick);
+  if (registry.size > 0) timer = window.setTimeout(poll, POLL_MS);
 }
 
-function ensureLoop() {
-  if (loopHandle === 0) loopHandle = requestAnimationFrame(tick);
-  if (listening) return;
-  listening = true;
-  // Resize changes layout, so re-arm the loop.
-  window.addEventListener(
-    "resize",
-    () => {
-      if (registry.size > 0) ensureLoop();
-    },
-    { passive: true },
-  );
+function arm() {
+  if (timer === null && registry.size > 0) timer = window.setTimeout(poll, POLL_MS);
 }
 
 export function useReveal<T extends HTMLElement>() {
@@ -77,37 +69,28 @@ export function useReveal<T extends HTMLElement>() {
 
     el.setAttribute("data-pending", "");
 
-    let io: IntersectionObserver | null = null;
-    const entry: Pending = {
-      el,
-      done: () => {
-        io?.disconnect();
-        io = null;
-      },
-    };
+    const entry: Pending = { el };
 
-    // Primary: IntersectionObserver (cheap, no polling once resolved).
-    io = new IntersectionObserver(
+    const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (!e.isIntersecting) continue;
           el.removeAttribute("data-pending");
-          entry.done();
           registry.delete(entry);
+          io.disconnect();
         }
       },
       { threshold: 0, rootMargin: "0px 0px -6% 0px" },
     );
     io.observe(el);
 
-    // Safety: shared rAF loop for anything the observer misses (Lenis scroll).
     registry.add(entry);
-    ensureLoop();
+    arm();
 
     return () => {
-      io?.disconnect();
+      io.disconnect();
       registry.delete(entry);
-      el.removeAttribute("data-pending"); // never leave content hidden
+      el.removeAttribute("data-pending");
     };
   }, []);
 

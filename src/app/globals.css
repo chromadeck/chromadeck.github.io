@@ -41,7 +41,8 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* No CSS smooth scrolling: Lenis owns scroll interpolation. Having both
+     produces a double-eased, jittery feel. */
   scroll-padding-top: 72px;
   background: var(--color-background);
   color-scheme: dark;
@@ -298,7 +299,7 @@ body {
   --t-3xl: clamp(1.875rem, 3.4vw, 2.5rem);       /* 30-40 major headings      */
   --t-4xl: clamp(2.25rem, 4.6vw, 3.25rem);       /* 36-52 page headings       */
   --t-5xl: clamp(2.75rem, 6vw, 4.25rem);         /* 44-68 hero                */
-  --t-hero: clamp(3rem, 9.5vw, 8rem);             /* 48-128 display hero       */
+  --t-hero: clamp(2.5rem, 5.2vw, 4.5rem);         /* 40-72 display hero        */
 
   /* Line heights, paired to the scale */
   --lh-tight: 1.05;
@@ -329,11 +330,11 @@ body {
   letter-spacing: var(--tr-tight);
   font-weight: 700;
 }
-/* Full-bleed hero display: the big statement treatment. */
+/* Hero display: large enough to lead, restrained enough to stay readable. */
 .t-hero {
   font-size: var(--t-hero);
-  line-height: 0.92;
-  letter-spacing: -0.05em;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
   font-weight: 700;
 }
 .t-h1 {

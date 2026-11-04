@@ -59,12 +59,23 @@ export async function setupLenis(): Promise<Teardown> {
   const lenis = new (Lenis as unknown as new (
     options?: Record<string, unknown>,
   ) => LenisLike)({
-    // Lenis drives its own rAF. Driving it from GSAP's ticker produced very
-    // slow, stuttering programmatic scrolls, so we let Lenis own the loop and
-    // only tell ScrollTrigger to re-read on each scroll.
+    // Lenis owns its own rAF loop. Driving it from GSAP's ticker produced very
+    // slow programmatic scrolls, so we only tell ScrollTrigger to re-read.
     autoRaf: true,
-    duration: 1.05,
-    easing: (t: number) => 1 - Math.pow(1 - t, 3), // easeOutCubic
+    // Duration-based easing re-eases on every wheel tick, which reads as
+    // jitter when events arrive at irregular intervals. Lerp interpolates
+    // toward the target every frame and stays smooth under bursty input.
+    lerp: 0.1,
+    smoothWheel: true,
+    wheelMultiplier: 1,
+    touchMultiplier: 1.6,
+    // Let Lenis handle the wheel/touch itself and keep native keys and
+    // scrollbar dragging untouched.
+    syncTouch: false,
+    // No anchor interception: our nav calls scrollToElement() explicitly and
+    // two scroll drivers fighting over the same target causes visible judder.
+    anchors: false,
+    autoResize: true,
   });
 
   activeLenis = lenis;
@@ -114,7 +125,13 @@ export function scrollToElement(el: HTMLElement, extraOffset = 0) {
   const centred = rect.top + window.scrollY - (window.innerHeight - rect.height) / 2;
   const target = Math.max(0, centred + extraOffset);
   if (activeLenis) {
-    activeLenis.scrollTo(target, { offset: 0 });
+    activeLenis.scrollTo(target, {
+      offset: 0,
+      // A shorter, damped glide than the default 1s+ reads as responsive
+      // rather than sluggish, and avoids a long tail after the target is hit.
+      duration: 0.8,
+      easing: (t: number) => 1 - Math.pow(1 - t, 3),
+    });
   } else {
     window.scrollTo({ top: target, behavior: prefersReducedMotion() ? "auto" : "smooth" });
   }
