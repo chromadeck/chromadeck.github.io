@@ -5,6 +5,9 @@
 @import "@fontsource/geist/600.css";
 @import "@fontsource/geist/700.css";
 @import "@fontsource-variable/jetbrains-mono";
+/* Reference DNA fonts (yusufyunus study): Anybody display + Newsreader serif */
+@import "@fontsource-variable/anybody";
+@import "@fontsource-variable/newsreader";
 
 /* Tokens copied from ChromaDeck DESIGN.md (Flat Dark Minimal, v0.8.2) */
 @theme {
@@ -262,4 +265,164 @@ body {
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Reference DNA tokens (yusufyunus study, DESIGN-ANALYSIS.md)
+   Prefixed --rx- / .rx- to coexist with the ChromaDeck DESIGN.md tokens above.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Type families */
+  --font-display: "Anybody Variable", "Geist", system-ui, sans-serif;
+  --font-serif: "Newsreader Variable", Georgia, serif;
+
+  /* Type scale — displays clamp for responsive scale without breakpoints */
+  --rx-t-xs: 0.8125rem;
+  --rx-t-sm: 0.9375rem;
+  --rx-t-md: 1.0625rem;
+  --rx-t-lg: 1.3125rem;
+  --rx-t-xl: 1.75rem;
+  --rx-t-2xl: clamp(2rem, 4vw, 2.75rem);
+  --rx-t-3xl: clamp(2.5rem, 6vw, 4.5rem);
+  --rx-t-4xl: clamp(3rem, 9vw, 7.5rem);
+
+  /* Layout */
+  --rx-gutter: clamp(16px, 4vw, 56px);
+  --rx-max: 1320px;
+  --rx-cw: min(52vw, 780px);
+
+  /* Radii */
+  --rx-radius-sm: 10px;
+  --rx-radius: 18px;
+  --rx-radius-lg: 28px;
+  --rx-pill: 999px;
+
+  /* Motion */
+  --rx-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Z ladder (content → nav → dialog) */
+  --rx-z-content: 10;
+  --rx-z-nav: 50;
+  --rx-z-dialog: 80;
+
+  /* Semantic scene hues (Desk card headers / search categories) */
+  --rx-h-blue: #a8c7e6;
+  --rx-h-pink: #e8a3a8;
+  --rx-h-peri: #a9aee6;
+  --rx-h-mint: #a9d2b2;
+  --rx-h-amber: #e3c77f;
+  --rx-h-rose: #dea9c9;
+}
+
+/* Dark palette (default — deep navy ink world) */
+:root,
+[data-rx-theme="dark"] {
+  --rx-bg: #0c0e1c;
+  --rx-bg-2: #11142a;
+  --rx-surface: #171a31;
+  --rx-surface-2: #1d2140;
+  --rx-text: #ecedf5;
+  --rx-muted: #a4a8c4;
+  --rx-line: rgba(236, 237, 245, 0.12);
+  --rx-line-strong: rgba(236, 237, 245, 0.26);
+  --rx-noise: #5d6190;
+  --rx-signal: #c77bff; /* violet signal accent (dark) */
+  --rx-signal-ink: #dba6ff;
+  --rx-ink: #14152b; /* text on light surfaces */
+  --rx-red: #d71f2b; /* crimson attention accent */
+  --rx-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 20px 50px -18px rgba(0, 0, 0, 0.7);
+}
+
+/* Light palette (paper world — the reference's default look) */
+[data-rx-theme="light"] {
+  --rx-bg: #f2f3f7;
+  --rx-bg-2: #eceef5;
+  --rx-surface: #ffffff;
+  --rx-surface-2: #f6f7fb;
+  --rx-text: #14152b;
+  --rx-muted: #5a5e7e;
+  --rx-line: rgba(20, 21, 43, 0.1);
+  --rx-line-strong: rgba(20, 21, 43, 0.24);
+  --rx-noise: #9aa0c8;
+  --rx-signal: #d71f2b;
+  --rx-signal-ink: #b3151f;
+  --rx-ink: #14152b;
+  --rx-red: #d71f2b;
+  --rx-shadow: 0 1px 2px rgba(20, 21, 43, 0.06), 0 20px 50px -18px rgba(20, 21, 43, 0.28);
+}
+
+/* Type utilities */
+.rx-font-display {
+  font-family: var(--font-display);
+}
+.rx-font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Hero-scale display line: measured from the reference H1 (weight 820,
+   line-height 0.8x, tight tracking). Use on short all-caps-capable headlines. */
+.rx-display-1 {
+  font-family: var(--font-display);
+  font-size: var(--rx-t-4xl);
+  line-height: 0.82;
+  letter-spacing: -0.035em;
+  font-weight: 820;
+}
+
+.rx-display-2 {
+  font-family: var(--font-display);
+  font-size: var(--rx-t-3xl);
+  line-height: 0.9;
+  letter-spacing: -0.032em;
+  font-weight: 820;
+}
+
+/* Section headline (H2): giant sans + word-level scrub later */
+.rx-section-title {
+  font-family: var(--font-display);
+  font-size: var(--rx-t-2xl);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  font-weight: 820;
+}
+
+/* Serif narration block */
+.rx-serif-lead {
+  font-family: var(--font-serif);
+  font-size: var(--rx-t-lg);
+  line-height: 1.5;
+  color: var(--rx-muted);
+}
+
+/* Pill chips — the reference's universal control */
+.rx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: var(--rx-pill);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.rx-chip--ink {
+  background: var(--rx-text);
+  color: var(--rx-ink);
+  border: 1px solid transparent;
+}
+.rx-chip--line {
+  background: color-mix(in srgb, var(--rx-surface) 72%, transparent);
+  border: 1px solid var(--rx-line-strong);
+  color: var(--rx-text);
+}
+.rx-chip--tint {
+  background: color-mix(in srgb, var(--rx-surface) 88%, transparent);
+  border: 1px solid var(--rx-line);
+  color: var(--rx-text);
 }

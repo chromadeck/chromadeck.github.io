@@ -47,7 +47,7 @@ export default function RootLayout({
         <link rel="canonical" href="https://chromadeck.github.io/" />
         <link rel="icon" type="image/svg+xml" href="/logo.svg" />
       </head>
-      <body className="bg-background text-foreground antialiased" suppressHydrationWarning>{children}</body>
+      <body className="bg-background text-foreground antialiased">{children}</body>
     </html>
   );
 }
