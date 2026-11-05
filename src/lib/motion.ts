@@ -97,33 +97,37 @@ function release() {
   activeLenis = null;
 }
 
-/** Smooth-scroll to an element id, centring it in the viewport. */
+/** Smooth-scroll to an element id using the shared navigation logic. */
 export function scrollToId(id: string) {
   if (typeof document === "undefined") return;
   const el = document.getElementById(id);
-  if (!el) return;
-  if (activeLenis) {
-    activeLenis.scrollTo(el, { offset: 0 });
-  } else {
-    el.scrollIntoView({
-      behavior: prefersReducedMotion() ? "auto" : "smooth",
-      block: "center",
-    });
-  }
+  if (el) scrollToElement(el);
 }
 
 /**
- * Centre an element in the viewport, accounting for the fixed header.
+ * Navigate to an element, accounting for the fixed header.
  *
- * Used for every in-page navigation (nav links, skip links, anchor buttons) so
- * a section lands centred rather than flush under the header. Falls back to a
- * native smooth scroll when Lenis is not running.
+ * Short sections (smaller than the viewport) land centred; sections taller
+ * than the viewport align with their top just under the header — centring a
+ * tall section would scroll its heading above the viewport, so a nav click
+ * for "Features" would land mid-card-grid with the title off-screen (measured
+ * at -505px on mobile before this fix).
+ *
+ * Used for every in-page navigation (nav links, skip links, anchor buttons).
+ * Falls back to a native smooth scroll when Lenis is not running.
  */
 export function scrollToElement(el: HTMLElement, extraOffset = 0) {
   if (typeof document === "undefined") return;
+  const header = document.querySelector<HTMLElement>("header");
+  const headerH = header?.offsetHeight ?? 0;
   const rect = el.getBoundingClientRect();
-  const centred = rect.top + window.scrollY - (window.innerHeight - rect.height) / 2;
-  const target = Math.max(0, centred + extraOffset);
+  const top = rect.top + window.scrollY;
+  const target = Math.max(
+    0,
+    (rect.height > window.innerHeight
+      ? top - headerH // tall: top-aligned under the fixed header
+      : top - (window.innerHeight - rect.height) / 2) + extraOffset, // short: centred
+  );
   if (activeLenis) {
     activeLenis.scrollTo(target, {
       offset: 0,
