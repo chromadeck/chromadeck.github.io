@@ -49,7 +49,9 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://chromadeck.github.io/" />
-        <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+        <link rel="canonical" href="https://chromadeck.github.io/" />
+        <link rel="icon" type="image/png" href="/chromadeck.png" />
+        <link rel="apple-touch-icon" href="/chromadeck.png" />
       </head>
       <body className="bg-background text-foreground antialiased">{children}</body>
     </html>
