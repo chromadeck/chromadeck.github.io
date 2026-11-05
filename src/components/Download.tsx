@@ -4,8 +4,6 @@ import { useRelease, formatBytes, Button, Chip } from "./ui";
 import { Reveal } from "./Reveal";
 import { ScrubText } from "./ScrubText";
 
-const STABLE_TAG = "v0.8.1";
-
 export function Download() {
   const release = useRelease();
   const [warn, setWarn] = React.useState(false);
@@ -92,7 +90,8 @@ export function Download() {
 
             {warn && (
               <p className="t-meta mt-4 text-subtle">
-                GitHub API unreachable — showing verified stable fallback: {STABLE_TAG}.
+                The live GitHub release is unavailable — download links point to the verified
+                fallback: {release.tag}.
               </p>
             )}
             </div>
