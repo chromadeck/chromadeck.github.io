@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { registerScrub } from "../lib/scrub";
 
 /**
@@ -57,11 +57,15 @@ export function ScrubText({ paragraphs, className = "", lead = false }: ScrubTex
                 : "t-body text-pretty text-muted [&:not(:first-child)]:mt-4"
             }
           >
-            {p.split(/\s+/).filter(Boolean).map((word, wi) => (
-              <span key={wi} data-unit className="scrub-unit">
-                {word}
-                {" "}
-              </span>
+            {/* The separating space is a text node BETWEEN the spans. Putting it
+                inside them would be trimmed, because each unit is inline-block. */}
+            {p.split(/\s+/).filter(Boolean).map((word, wi, all) => (
+              <Fragment key={wi}>
+                <span data-unit className="scrub-unit">
+                  {word}
+                </span>
+                {wi < all.length - 1 ? " " : null}
+              </Fragment>
             ))}
           </p>
         ))}
