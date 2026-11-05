@@ -96,7 +96,7 @@ export function Features() {
                   <h3 className="t-h3 mt-2 text-foreground">{f.title}</h3>
                   <p className="t-body mt-2.5 text-muted">{f.body}</p>
                   <span
-                    className={`t-meta tag-scale mt-4 inline-block tracking-wider ${
+                    className={`t-meta tag-lift mt-4 inline-block tracking-wider ${
                       f.active ? "text-foreground" : "text-subtle"
                     }`}
                   >

@@ -107,14 +107,16 @@ body {
   transition: translate 150ms var(--ease-out);
 }
 
-/* Button content scales up on hover instead of color change */
+/* Button label slides right on hover — directional feedback that matches the
+   icon-disc nudge; the label never changes size. Colour transitions stay with
+   .press (base) so hover state reads as "same shape, moving forward". */
 .btn-content {
   display: inline-flex;
   align-items: center;
-  transition: scale 150ms var(--ease-standard);
+  transition: translate 150ms var(--ease-standard);
 }
 .press:hover .btn-content {
-  scale: 1.06;
+  translate: 2px 0;
 }
 
 /* Nav link — sliding underline on hover */
@@ -139,10 +141,13 @@ body {
   width: 100%;
 }
 
-/* Feature card hover — tag scales slightly, border brightens more */
-.card:hover .tag-scale {
+/* Feature card hover — tag nudges up 1px; the border brightening (on .card)
+   carries the rest of the signal. Text size is untouched. */
+.card:hover .tag-lift {
   translate: 0 -1px;
-  scale: 1.06;
+}
+.tag-lift {
+  transition: translate 150ms var(--ease-standard);
 }
 
 /* Chip — subtle lift on hover */
@@ -154,20 +159,6 @@ body {
 }
 .chip:hover {
   translate: 0 -1px;
-}
-
-/* Showcase tab — spring scale on active, subtle scale down when inactive */
-.tab-btn {
-  transition:
-    scale 150ms var(--ease-spring),
-    background-color 150ms var(--ease-standard),
-    border-color 150ms var(--ease-standard);
-}
-.tab-btn:not([aria-pressed="true"]):hover {
-  scale: 1.02;
-}
-.tab-btn[aria-pressed="true"] {
-  scale: 1.03;
 }
 
 /* Mobile menu items — staggered slide-in on open */
@@ -182,15 +173,6 @@ body {
 .mobile-menu.is-open .mobile-menu-item {
   opacity: 1;
   translate: 0 0;
-}
-
-/* Before/After divider — subtle pulse when idle */
-.ba-divider {
-  transition: translate 100ms var(--ease-out);
-}
-.ba-divider:hover {
-  translate: -50% -2px;
-  scale: 1.15;
 }
 
 /* Hero text line — subtle mint glow on hover (flat, no blur) */
@@ -481,15 +463,5 @@ summary,
 }
 .card:hover {
   transform: translateY(-2px);
-}
-
-/* Media settles in rather than popping. */
-.shot {
-  transition-property: transform;
-  transition-duration: 480ms;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-figure:hover .shot {
-  transform: scale(1.006);
 }
 
