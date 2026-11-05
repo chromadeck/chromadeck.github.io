@@ -78,7 +78,7 @@ export function Nav() {
           <a
             href="#download"
             onClick={(e) => jump(e, "#download")}
-            className="press ml-3 inline-flex h-12 items-center rounded-full bg-primary px-7 text-[var(--t-sm)] font-semibold text-primary-foreground"
+            className="press ml-3 inline-flex h-12 items-center rounded-full bg-primary px-7 text-[var(--t-sm)] font-semibold text-primary-foreground hover:brightness-110"
           >
             Download
           </a>
@@ -125,7 +125,7 @@ export function Nav() {
         <a
           href="#download"
           onClick={(e) => jump(e, "#download")}
-          className="press mt-5 flex h-12 items-center justify-center rounded-full bg-primary text-[var(--t-sm)] font-semibold text-primary-foreground"
+          className="press mt-5 flex h-12 items-center justify-center rounded-full bg-primary text-[var(--t-sm)] font-semibold text-primary-foreground hover:brightness-110"
         >
           Download for Windows
         </a>

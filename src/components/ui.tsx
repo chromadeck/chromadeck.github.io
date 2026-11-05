@@ -39,10 +39,12 @@ type BtnProps = {
 export function Button({ href, children, variant = "primary", external, icon = true, wrap = false, className = "" }: BtnProps) {
   const size = wrap ? "min-h-[52px] py-3 whitespace-normal text-left" : "h-[52px] whitespace-nowrap";
   const base = `press inline-flex items-center gap-3 rounded-[8px] text-[14px] font-semibold ${size} transition-colors`;
+  /* Hover distinctions: primary brightens (motion + glow-lift), ghost fills
+     darker like a card surface. Same curves, different colour channel. */
   const look =
     variant === "primary"
-      ? "bg-primary text-primary-foreground"
-      : "border border-border bg-surface text-foreground";
+      ? "bg-primary text-primary-foreground hover:brightness-110"
+      : "border border-border bg-surface text-foreground hover:bg-surface-hover hover:border-border-hover";
   const pad = icon ? "pl-6 pr-2" : "px-6";
   return (
     <a

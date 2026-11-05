@@ -90,15 +90,18 @@ body {
   background: var(--color-surface);
 }
 
-/* Signature 1px press */
+/* Signature 1px press. Primary buttons also brighten slightly on hover
+   (filter is compositor-friendly); ghost buttons instead fill darker. */
 .press {
   transition:
     translate 120ms var(--ease-out),
     background-color 150ms var(--ease-standard),
-    border-color 150ms var(--ease-standard);
+    border-color 150ms var(--ease-standard),
+    filter 150ms var(--ease-standard);
 }
 .press:active {
   translate: 0 1px;
+  filter: brightness(0.97);
 }
 .press:hover .press-icon {
   translate: 3px 0;
@@ -119,7 +122,9 @@ body {
   translate: 2px 0;
 }
 
-/* Nav link — sliding underline on hover */
+/* Nav link — sliding underline on hover. The underline also wipes in on
+   :focus-visible so keyboard users get the same "this navigates" signal as
+   pointer users, not just the focus ring. */
 .nav-link {
   position: relative;
   transition: color 150ms var(--ease-standard);
@@ -134,10 +139,12 @@ body {
   background: var(--color-primary);
   transition: width 150ms var(--ease-fluid);
 }
-.nav-link:hover {
+.nav-link:hover,
+.nav-link:focus-visible {
   color: var(--color-foreground);
 }
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-link:focus-visible::after {
   width: 100%;
 }
 
@@ -150,7 +157,8 @@ body {
   transition: translate 150ms var(--ease-standard);
 }
 
-/* Chip — subtle lift on hover */
+/* Chip — subtle lift on hover; settles flat while pressed, completing the
+   physical metaphor without implying a click does anything. */
 .chip {
   transition:
     translate 150ms var(--ease-standard),
@@ -159,6 +167,9 @@ body {
 }
 .chip:hover {
   translate: 0 -1px;
+}
+.chip:active {
+  translate: 0 0;
 }
 
 /* Mobile menu items — staggered slide-in on open */
@@ -455,7 +466,8 @@ summary,
   border-color: var(--color-border-hover);
 }
 
-/* Cards lift a hair rather than changing colour — reads as depth, not noise. */
+/* Cards lift a hair rather than changing colour — reads as depth, not noise.
+   Pressing settles the card flat: acknowledged, not triggered. */
 .card {
   transition-property: border-color, transform, background-color;
   transition-duration: 260ms;
@@ -463,5 +475,9 @@ summary,
 }
 .card:hover {
   transform: translateY(-2px);
+}
+.card:active,
+.lift:active {
+  transform: translateY(0);
 }
 
