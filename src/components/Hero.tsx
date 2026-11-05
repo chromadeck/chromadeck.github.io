@@ -1,7 +1,11 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { Button, useRelease } from "./ui";
 import { REPO_URL } from "../lib/releases";
+
+/** Per-word load stagger delays, 90ms apart. */
+const wd = (ms: number) => ({ "--wd": `${ms}ms` }) as CSSProperties;
 
 /**
  * Hero — ChromaDeck's proposition at full display scale.
@@ -21,11 +25,14 @@ export function Hero() {
           <p className="eyebrow">Display control / made simple</p>
 
           <h1 className="t-hero mt-6 text-balance text-foreground">
-            Your display.
+            <span className="hero-word" style={wd(0)}>Your</span>{" "}
+            <span className="hero-word" style={wd(90)}>display.</span>
             <br />
-            Your colours.
+            <span className="hero-word" style={wd(180)}>Your</span>{" "}
+            <span className="hero-word" style={wd(270)}>colours.</span>
             <br />
-            <span className="text-primary">Your control.</span>
+            <span className="hero-word text-primary" style={wd(360)}>Your</span>{" "}
+            <span className="hero-word text-primary" style={wd(450)}>control.</span>
           </h1>
 
           <p className="t-lead mt-8 max-w-[54ch] text-pretty text-muted">
