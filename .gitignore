@@ -15,3 +15,6 @@ next-env.d.ts.bak
 # open-mem: Auto-generated folder context files.
 # Uncomment to exclude from version control (recommended for large projects):
 # **/AGENTS.md
+
+# Update signing keys (secret key must never be committed)
+scripts/.keys/

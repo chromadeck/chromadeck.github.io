@@ -1,0 +1,9 @@
+{
+  "version": "0.9.0",
+  "notes": "ChromaDeck v0.9.0 — auto-updater. Checks this manifest for updates and installs signed releases automatically.",
+  "pub_date": "2026-11-10T00:00:00Z",
+  "data": {
+    "url": "https://github.com/miiidev/ChromaDeck/releases/download/v0.9.0/ChromaDeck_0.9.0_x64-en-US.msi",
+    "signature": "PLACEHOLDER_SIGNATURE"
+  }
+}
