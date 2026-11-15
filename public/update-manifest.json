@@ -1,7 +1,7 @@
 {
-  "version": "0.9.2",
-  "notes": "ChromaDeck v0.9.2 — auto-updater. Checks this manifest for updates and installs signed releases automatically.",
-  "pub_date": "2026-11-11T00:00:00Z",
-  "url": "https://github.com/miiidev/ChromaDeck/releases/download/v0.9.2/ChromaDeck_0.9.2_x64_en-US.msi",
-  "signature": "RWQUd31f18orPoDfPEoZ52yzI3wFaOXwU2Uc56R8/golKH2hxR0RXAXrV1d1T/r5MqRH9OEfyXAT7QS/ETUdahVMDPOBZ49WlwU="
+  "version": "0.9.3",
+  "notes": "ChromaDeck v0.9.3 — monitor silhouette cards, a cleaner single-border reskin with larger labels, a more reliable update flow, and fixes for apply/reset races, failed saves, GDI drift false alarms and ICC profiles in saved presets.",
+  "pub_date": "2026-11-16T00:00:00Z",
+  "url": "https://github.com/miiidev/ChromaDeck/releases/download/v0.9.3/ChromaDeck_0.9.3_x64_en-US.msi",
+  "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUQXQwNmFzU0NmZ0xLSTBraTloVndCVUdaVFZZVmV6Z2NhQW9PVVJGTHoySzZtRDFSdmUrakV5MUNGWEVYVjg5RWdqK1RxdjRGTy81SGpIOUwrNERpb21WV0FPUmFmV3drPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0NzY1NjM2CWZpbGU6Q2hyb21hRGVja18wLjkuM194NjRfZW4tVVMubXNpCXZlcnNpb246MC45LjMKTWRhbU9aTHViaE94NTFOS1lNOXZmS0lZKy90eW8yQVZJQ05lak0xdmRMU3VFWVdIcFpnVnZoR2JXcnd1VituaTY4Q3d3QS9UbWRPOXRydmJRc2xkRHc9PQo="
 }
