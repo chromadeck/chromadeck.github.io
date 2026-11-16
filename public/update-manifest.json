@@ -1,7 +1,7 @@
 {
-  "version": "0.9.3",
-  "notes": "ChromaDeck v0.9.3 — monitor silhouette cards, a cleaner single-border reskin with larger labels, a more reliable update flow, and fixes for apply/reset races, failed saves, GDI drift false alarms and ICC profiles in saved presets.",
-  "pub_date": "2026-11-16T00:00:00Z",
-  "url": "https://github.com/miiidev/ChromaDeck/releases/download/v0.9.3/ChromaDeck_0.9.3_x64_en-US.msi",
-  "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUQXQwNmFzU0NmZ0xLSTBraTloVndCVUdaVFZZVmV6Z2NhQW9PVVJGTHoySzZtRDFSdmUrakV5MUNGWEVYVjg5RWdqK1RxdjRGTy81SGpIOUwrNERpb21WV0FPUmFmV3drPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0NzY1NjM2CWZpbGU6Q2hyb21hRGVja18wLjkuM194NjRfZW4tVVMubXNpCXZlcnNpb246MC45LjMKTWRhbU9aTHViaE94NTFOS1lNOXZmS0lZKy90eW8yQVZJQ05lak0xdmRMU3VFWVdIcFpnVnZoR2JXcnd1VituaTY4Q3d3QS9UbWRPOXRydmJRc2xkRHc9PQo="
+  "version": "0.9.4",
+  "notes": "ChromaDeck v0.9.4 — the Pin toggle is back in the Apply dialog, so you can keep a preset enforced on a monitor again.",
+  "pub_date": "2026-11-16T14:25:08Z",
+  "url": "https://github.com/miiidev/ChromaDeck/releases/download/v0.9.4/ChromaDeck_0.9.4_x64_en-US.msi",
+  "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUQXQwNmFzU0NmZ0t0ZS9EOE9nemJwdVVCc1UzUC9ZQ0VZN1lKUkZuQ2Fua0h3dWw4MDFHQUxwKzlJTGVRL2NDSkpGTkJybHpJR3docmpkYkJGN1FRMmIydTM3M3NuUndzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0ODM5MDc4CWZpbGU6Q2hyb21hRGVja18wLjkuNF94NjRfZW4tVVMubXNpCXZlcnNpb246MC45LjQKMmExbnZmOU5DWWswSWRRelRqZW0vR1lWYVd6RCtoZDNvODB3V1FIRVJYclBXYXdaWGFxZGtJUVgzRTBkYVJub1I1UWc2amxDT29XV01VUWw3N2tOQnc9PQo="
 }
