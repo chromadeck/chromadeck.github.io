@@ -18,9 +18,38 @@ describe("fetchLatestRelease", () => {
   it("falls back to the verified stable release on network error", async () => {
     globalThis.fetch = () => Promise.reject(new Error("network")) as any;
     const r = await fetchLatestRelease();
-    expect(r.tag).toBe("v0.8.2");
-    expect(r.msi!.browser_download_url).toContain("/releases/download/v0.8.2/");
-    expect(r.setup && r.portable && r.exe).toBeTruthy();
+    expect(r.tag).toBe("v0.9.4");
+    expect(r.msi!.browser_download_url).toContain("/releases/download/v0.9.4/");
+    expect(r.msi!.name).toBe("ChromaDeck_0.9.4_x64_en-US.msi");
+    expect(r.setup && r.portable).toBeTruthy();
+    // Releases since v0.9.2 no longer ship a bare chromadeck.exe.
+    expect(r.exe).toBeNull();
+  });
+
+  it("accepts a release without a standalone exe (v0.9.x ships MSI, setup and portable ZIP only)", async () => {
+    const asset = (name: string) => ({ name, browser_download_url: `https://x/${name}`, size: 1 });
+    globalThis.fetch = () =>
+      Promise.resolve({
+        ok: true,
+        json: async () => ({
+          tag_name: "v0.9.5",
+          html_url: "https://x/rel",
+          assets: [
+            asset("ChromaDeck_0.9.5_x64-portable.zip"),
+            asset("ChromaDeck_0.9.5_x64-setup.exe"),
+            asset("ChromaDeck_0.9.5_x64-setup.exe.sig"),
+            asset("ChromaDeck_0.9.5_x64_en-US.msi"),
+            asset("ChromaDeck_0.9.5_x64_en-US.msi.sig"),
+          ],
+        }),
+      }) as any;
+    const r = await fetchLatestRelease();
+    expect(r).not.toBe(FALLBACK);
+    expect(r.tag).toBe("v0.9.5");
+    expect(r.msi!.name).toBe("ChromaDeck_0.9.5_x64_en-US.msi");
+    expect(r.setup!.name).toBe("ChromaDeck_0.9.5_x64-setup.exe"); // not the .sig
+    expect(r.portable!.name).toBe("ChromaDeck_0.9.5_x64-portable.zip");
+    expect(r.exe).toBeNull();
   });
 
   it("falls back on non-ok or malformed responses", async () => {

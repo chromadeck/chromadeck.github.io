@@ -28,12 +28,13 @@ const dl = (tag: string, name: string, size: number): ReleaseAsset => ({
  * address can exhaust). Updated by hand whenever a release ships.
  */
 export const FALLBACK: Release = {
-  tag: "v0.8.2",
-  url: `${REPO_URL}/releases/tag/v0.8.2`,
-  msi: dl("v0.8.2", "ChromaDeck_0.8.2_x64_en-US.msi", 3031040),
-  setup: dl("v0.8.2", "ChromaDeck_0.8.2_x64-setup.exe", 2217601),
-  portable: dl("v0.8.2", "ChromaDeck_0.8.2_x64-portable.zip", 2659112),
-  exe: dl("v0.8.2", "chromadeck.exe", 5663232),
+  tag: "v0.9.4",
+  url: `${REPO_URL}/releases/tag/v0.9.4`,
+  msi: dl("v0.9.4", "ChromaDeck_0.9.4_x64_en-US.msi", 4313088),
+  setup: dl("v0.9.4", "ChromaDeck_0.9.4_x64-setup.exe", 3052380),
+  portable: dl("v0.9.4", "ChromaDeck_0.9.4_x64-portable.zip", 3719527),
+  // Releases since v0.9.2 do not ship a bare chromadeck.exe.
+  exe: null,
 };
 
 interface GitHubAsset {
@@ -69,8 +70,9 @@ export async function fetchLatestRelease(): Promise<Release> {
     };
 
     // A release missing its expected installers would render `null` download
-    // buttons (Download.tsx dereferences these non-null). Refuse such data.
-    if (!release.msi || !release.setup || !release.portable || !release.exe) return FALLBACK;
+    // buttons (Download.tsx dereferences msi/setup/portable non-null). Refuse such
+    // data. The standalone exe is optional: v0.9.x releases do not include it.
+    if (!release.msi || !release.setup || !release.portable) return FALLBACK;
 
     return release;
   } catch {

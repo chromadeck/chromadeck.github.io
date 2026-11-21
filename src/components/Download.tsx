@@ -53,15 +53,17 @@ export function Download() {
               <Button href={release.portable!.browser_download_url} className="w-full" icon={false} wrap>
                 Portable ZIP ({asset(release.portable)})
               </Button>
-              <Button
-                href={release.exe!.browser_download_url}
-                variant="ghost"
-                className="w-full"
-                icon={false}
-                wrap
-              >
-                Standalone executable ({asset(release.exe)})
-              </Button>
+              {release.exe && (
+                <Button
+                  href={release.exe.browser_download_url}
+                  variant="ghost"
+                  className="w-full"
+                  icon={false}
+                  wrap
+                >
+                  Standalone executable ({asset(release.exe)})
+                </Button>
+              )}
             </div>
 
             <p className="t-meta mt-6 leading-relaxed text-subtle">
