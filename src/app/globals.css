@@ -481,3 +481,286 @@ summary,
   transform: translateY(0);
 }
 
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Catalog layout: mono labels, ruled grids, window frames.
+   Matches the app's own uppercase mono labels (PRESET EDITOR, MONITORS (3)).
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Mono uppercase label: section bars, chips, nav, metadata. */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--t-2xs);
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Hero screenshot frame with a title bar, like a desktop window. */
+.window {
+  border: 1px solid var(--color-border-hover);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+.window-bar {
+  display: flex;
+  height: 36px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Download rows */
+.download-row {
+  transition: background-color 150ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.download-row:hover {
+  background: var(--color-surface);
+}
+.download-icon {
+  transition:
+    color 150ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 150ms cubic-bezier(0.22, 1, 0.36, 1),
+    translate 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.download-row:hover .download-icon {
+  color: var(--color-primary);
+  border-color: var(--color-primary-border);
+  translate: 0 2px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   ScrollCraft build. Grammar: gallery. See scrollcraft/builds/chromadeck-web.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Signature move: the page wears a ChromaDeck preset. Regrade.tsx writes the
+   ramp into #cd-grade and adds .is-graded; every screenshot, the video and
+   the graded colour bar run through it. Tokens are regraded in JS. */
+html.is-graded .gradable {
+  filter: url(#cd-grade);
+}
+
+/* Hero: two planes. The dashboard sits back, the apply dialog floats in
+   front, offset to the trailing edge. */
+.hero-stage {
+  position: relative;
+  margin-top: 4.5rem;
+  margin-bottom: clamp(5rem, 12vw, 9rem);
+}
+.hero-plane {
+  will-change: transform;
+  transform-origin: 50% 0%;
+}
+.hero-dialog {
+  position: absolute;
+  right: -1.5%;
+  bottom: -16%;
+  width: 36%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--color-border-hover);
+  /* Flat depth (no shadows, per DESIGN.md): a ring of page ground cuts the
+     dialog out of the window behind it, so the overlap reads as occlusion. */
+  outline: 10px solid var(--color-background);
+}
+@media (max-width: 639px) {
+  .hero-stage {
+    margin-top: 3rem;
+  }
+  .hero-dialog {
+    width: 58%;
+    right: -3%;
+    bottom: -22%;
+  }
+}
+
+/* Screens: stacked by default, a pinned sideways rail in pan mode. */
+.screens-stage {
+  padding: 5rem 1.5rem;
+}
+.screens-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.screen-frame {
+  border: 1px solid var(--color-border-hover);
+  background: var(--color-background);
+  overflow: hidden;
+}
+.screens-intro {
+  max-width: 34rem;
+}
+@media (min-width: 640px) {
+  .screens-stage {
+    padding: 7rem 2.5rem;
+  }
+}
+.screens--pan .screens-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 64px 0 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.screens--pan .screens-rail {
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(3rem, 5vw, 5.5rem);
+  max-width: none;
+  margin: 0;
+  padding: 0 max(2.5rem, calc((100vw - 1200px) / 2 + 2.5rem));
+  will-change: transform;
+}
+.screens--pan .screen-item {
+  flex: 0 0 auto;
+  width: var(--w);
+  will-change: transform, opacity;
+}
+.screens--pan .screens-intro {
+  flex: 0 0 26rem;
+}
+.screens--pan .screens-outro {
+  flex: 0 0 18rem;
+}
+
+/* The peak. A silent band before it (section padding), the steps with room
+   to breathe, and the colour bar held beside them. */
+.peak-panel {
+  position: sticky;
+  top: 76px;
+  z-index: 2;
+  align-self: start;
+}
+.peak-step {
+  padding: 14vh 0;
+  border-top: 1px solid var(--color-border);
+}
+.peak-step:first-child {
+  padding-top: 6vh;
+  border-top: 0;
+}
+.peak-step--apply {
+  padding: 24vh 0;
+}
+@media (max-width: 1023px) {
+  .peak-panel {
+    top: 64px;
+    margin: 0 -1.5rem;
+    padding: 0.5rem 1.5rem;
+    background: var(--color-background);
+  }
+}
+
+/* Closing label plate: the same schema as the catalog labels. */
+.label-plate {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  border-top: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+}
+.label-plate > div {
+  padding: 0.75rem 1rem;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Nav marks the section in view. */
+.nav-link[aria-current="location"] {
+  color: var(--color-foreground);
+}
+.nav-link[aria-current="location"]::after {
+  width: 100%;
+}
+
+/* OSD: the preset control, styled after a monitor's on-screen menu. */
+.osd {
+  position: fixed;
+  z-index: 45;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  width: 22rem;
+  padding: 0.875rem 1rem 0.75rem;
+  border: 1px solid var(--color-border-hover);
+  background: var(--color-surface);
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 10px;
+  transition:
+    opacity 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    translate 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 260ms;
+}
+.osd.is-shown {
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+  transition-delay: 0s;
+}
+.osd-presets {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  margin-top: 0.625rem;
+}
+.osd-preset {
+  min-height: 36px;
+  padding: 0 4px;
+  border: 1px solid var(--color-border-hover);
+  color: var(--color-muted);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  transition:
+    color 150ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 150ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 150ms cubic-bezier(0.22, 1, 0.36, 1),
+    translate 120ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .osd-preset:hover {
+    color: var(--color-foreground);
+    border-color: var(--color-muted);
+  }
+}
+.osd-preset:active {
+  translate: 0 1px;
+}
+.osd-preset[aria-checked="true"] {
+  color: var(--color-primary-foreground);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.osd-readout {
+  margin-top: 0.625rem;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 639px) {
+  .osd {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    padding: 0.5rem 0.75rem calc(0.5rem + env(safe-area-inset-bottom));
+    border-width: 1px 0 0;
+  }
+  .osd-presets {
+    margin-top: 0.375rem;
+  }
+  .osd-readout {
+    display: none;
+  }
+  body {
+    padding-bottom: 96px;
+  }
+}

@@ -4,16 +4,17 @@ import { Menu, X } from "lucide-react";
 import { Logo } from "./ui";
 import { REPO_URL } from "../lib/releases";
 import { scrollToElement } from "../lib/motion";
+import { SECTIONS } from "../lib/sections";
+import { useActiveSection } from "../lib/sections";
 
-const LINKS = [
-  { href: "#features", label: "Features" },
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#video", label: "Video" },
-  { href: "#requirements", label: "Requirements" },
-];
+const LINKS = SECTIONS.filter((s) => s.id !== "download").map((s) => ({
+  href: `#${s.id}`,
+  label: s.label,
+}));
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const active = useActiveSection();
 
   useEffect(() => {
     if (!open) return;
@@ -53,7 +54,7 @@ export function Nav() {
           onClick={close}
         >
           <Logo size={24} />
-          <span className="t-h3 text-foreground">ChromaDeck</span>
+          <span className="text-[var(--t-base)] font-semibold tracking-[-0.01em] text-foreground">ChromaDeck</span>
         </a>
 
         <div className="hidden items-center gap-1.5 lg:flex">
@@ -62,7 +63,8 @@ export function Nav() {
               key={l.href}
               href={l.href}
               onClick={(e) => jump(e, l.href)}
-              className="nav-link inline-flex h-11 items-center rounded-full px-5 text-[var(--t-sm)] text-muted hover:text-foreground"
+              aria-current={active === l.href.slice(1) ? "location" : undefined}
+              className="nav-link label inline-flex h-11 items-center px-4 text-muted hover:text-foreground"
             >
               {l.label}
             </a>
@@ -71,14 +73,14 @@ export function Nav() {
             href={REPO_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="nav-link inline-flex h-11 items-center rounded-full px-5 text-[var(--t-sm)] text-muted hover:text-foreground"
+            className="nav-link label inline-flex h-11 items-center px-4 text-muted hover:text-foreground"
           >
             GitHub
           </a>
           <a
             href="#download"
             onClick={(e) => jump(e, "#download")}
-            className="press ml-3 inline-flex h-12 items-center rounded-full bg-primary px-7 text-[var(--t-sm)] font-semibold text-primary-foreground hover:brightness-110"
+            className="press label ml-3 inline-flex h-10 items-center bg-primary px-5 font-semibold text-primary-foreground hover:brightness-110"
           >
             Download
           </a>
@@ -125,9 +127,9 @@ export function Nav() {
         <a
           href="#download"
           onClick={(e) => jump(e, "#download")}
-          className="press mt-5 flex h-12 items-center justify-center rounded-full bg-primary text-[var(--t-sm)] font-semibold text-primary-foreground hover:brightness-110"
+          className="press label mt-5 flex h-12 items-center justify-center bg-primary text-[var(--t-sm)] font-semibold text-primary-foreground hover:brightness-110"
         >
-          Download for Windows
+          Download
         </a>
       </div>
     </header>

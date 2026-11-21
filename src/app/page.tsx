@@ -2,12 +2,13 @@
 
 import { Nav } from "../components/Nav";
 import { Hero } from "../components/Hero";
-import { Features } from "../components/Features";
+import { Screens } from "../components/Screens";
 import { HowItWorks } from "../components/HowItWorks";
-import { Download } from "../components/Download";
 import { Video } from "../components/Video";
-import { Requirements } from "../components/Requirements";
+import { Principles } from "../components/Principles";
+import { Download } from "../components/Download";
 import { Footer } from "../components/Footer";
+import { Regrade } from "../components/Regrade";
 import { MotionProvider } from "../components/tools/MotionProvider";
 
 export default function Page() {
@@ -17,13 +18,14 @@ export default function Page() {
         <Nav />
         <main className="flex-1">
           <Hero />
-          <Features />
+          <Screens />
           <HowItWorks />
           <Video />
-          <Requirements />
+          <Principles />
           <Download />
         </main>
         <Footer />
+        <Regrade />
       </div>
     </MotionProvider>
   );

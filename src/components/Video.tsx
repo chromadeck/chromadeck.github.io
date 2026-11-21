@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Reveal } from "./Reveal";
 import { ScrubText } from "./ScrubText";
+import { useScrollProgress } from "../lib/scroll";
+import { prefersReducedMotion } from "../lib/motion";
 import { Volume2, VolumeX } from "lucide-react";
 
 /**
@@ -78,6 +80,19 @@ export function Video() {
     };
   }, []);
 
+  // Reveal: the frame wipes open from the bottom edge as it rises into view.
+  const frame = useRef<HTMLDivElement>(null);
+  const onReveal = useCallback((p: number) => {
+    const t = Math.min(1, Math.max(0, p / 0.55));
+    const eased = 1 - Math.pow(1 - t, 3);
+    if (frame.current) frame.current.style.clipPath = `inset(${(1 - eased) * 100}% 0 0 0)`;
+  }, []);
+  useScrollProgress(frame, onReveal, {
+    start: "top 95%",
+    end: "top 30%",
+    enabled: typeof window !== "undefined" && !prefersReducedMotion(),
+  });
+
   const toggleMute = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -90,29 +105,25 @@ export function Video() {
   };
 
   return (
-    <section id="video" aria-labelledby="video-title" className="scroll-mt-24 border-y border-border py-24 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
-        <div className="flex flex-col gap-10">
+    <section id="video" aria-labelledby="video-title" className="scroll-mt-16 border-t border-border">
+      <div className="mx-auto max-w-[1200px] px-6 py-20 sm:px-10 sm:py-28">
+        <div className="flex flex-col gap-12">
           <Reveal>
-            <div className="flex max-w-[620px] flex-col gap-5">
-              <p className="chapter eyebrow">
-                <span>04</span>
-                <span>See it in action</span>
-              </p>
-              <h2 id="video-title" className="t-h2 text-foreground">
-                Watch ChromaDeck work
+            <div className="flex max-w-[640px] flex-col gap-5">
+              <h2 id="video-title" className="t-h1 text-foreground">
+                Watch a preset go on.
               </h2>
               <ScrubText
                 lead
                 paragraphs={[
-                  "A quick walkthrough of the monitor dashboard, preset library, apply dialog, and pin workflow — direct from the v0.8.2 interface.",
+                  "The walkthrough covers the monitor dashboard, the preset library, the apply dialog and pinning.",
                 ]}
               />
             </div>
           </Reveal>
 
-          <Reveal staggerMs={90}>
-            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[8px] border border-border bg-surface">
+          <div>
+            <div ref={frame} className="video-frame relative aspect-[16/9] w-full overflow-hidden border border-border bg-surface">
               <video
                 ref={videoRef}
                 controls
@@ -120,7 +131,7 @@ export function Video() {
                 playsInline
                 preload="metadata"
                 aria-label="ChromaDeck product walkthrough"
-                className="h-full w-full object-contain"
+                className="gradable h-full w-full object-contain"
               >
                 <source src="/video/chromadeck-walkthrough.mp4" type="video/mp4" />
                 Your browser does not support embedded video.{" "}
@@ -137,7 +148,7 @@ export function Video() {
                 {muted ? "Muted" : "Sound on"}
               </button>
             </div>
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>
