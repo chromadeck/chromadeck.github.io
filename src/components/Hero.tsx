@@ -1,72 +1,81 @@
 "use client";
 
-import type { CSSProperties } from "react";
-import { Button, useRelease } from "./ui";
+import { useCallback, useRef } from "react";
+import { Button } from "./ui";
 import { REPO_URL } from "../lib/releases";
-
-/** Per-word load stagger delays, 90ms apart. */
-const wd = (ms: number) => ({ "--wd": `${ms}ms` }) as CSSProperties;
+import { useScrollProgress } from "../lib/scroll";
+import { prefersReducedMotion } from "../lib/motion";
 
 /**
- * Hero — ChromaDeck's proposition at full display scale.
+ * Hero: object one of the catalog. The main window, with the apply dialog
+ * open over it, the way the app actually stacks them.
  *
- * Centred composition: eyebrow, oversized display headline, serif lead, then
- * the two calls to action. The screenshot sits below the fold line so the
- * headline owns the first screen.
+ * Two planes. As the page scrolls, the dashboard sinks and recedes a little
+ * while the dialog lifts toward the reader, so the dialog separates from the
+ * window behind it. Copy rides at 1x. Reduced motion keeps the overlap and
+ * drops the movement.
  */
-
 export function Hero() {
-  const release = useRelease();
+  const stage = useRef<HTMLDivElement>(null);
+  const back = useRef<HTMLElement>(null);
+  const front = useRef<HTMLDivElement>(null);
+
+  const onProgress = useCallback((p: number) => {
+    // p runs 0..1 while the stage crosses the viewport; motion starts at ~0.35.
+    const t = Math.max(0, (p - 0.3) / 0.7);
+    if (back.current) back.current.style.transform = `translate3d(0, ${t * 70}px, 0) scale(${1 - t * 0.035})`;
+    if (front.current) front.current.style.transform = `translate3d(0, ${t * -110}px, 0)`;
+  }, []);
+
+  useScrollProgress(stage, onProgress, {
+    enabled: typeof window !== "undefined" && !prefersReducedMotion(),
+  });
 
   return (
     <section id="top" className="pt-28 sm:pt-36">
       <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
-        <div className="enter mx-auto flex max-w-[62ch] flex-col items-center text-center">
-          <p className="eyebrow">Display control / made simple</p>
-
-          <h1 className="t-hero mt-6 text-balance text-foreground">
-            <span className="hero-word" style={wd(0)}>Your</span>{" "}
-            <span className="hero-word" style={wd(90)}>display.</span>
-            <br />
-            <span className="hero-word" style={wd(180)}>Your</span>{" "}
-            <span className="hero-word" style={wd(270)}>colours.</span>
-            <br />
-            <span className="hero-word text-primary" style={wd(360)}>Your</span>{" "}
-            <span className="hero-word text-primary" style={wd(450)}>control.</span>
+        <div className="enter max-w-[760px]">
+          <h1 className="t-hero text-balance text-foreground">
+            Colour presets, <span className="text-primary">per monitor.</span>
           </h1>
-
-          <p className="t-lead mt-8 max-w-[54ch] text-pretty text-muted">
-            ChromaDeck is a free Windows utility for building display colour presets and applying
-            them per monitor — brightness, contrast, gamma, RGB gains, vibrance and hue, saved once
-            and switched in a click.
+          <p className="t-lead mt-6 max-w-[48ch] text-pretty text-muted">
+            A free Windows app that saves brightness, contrast, gamma and colour as presets, then
+            applies them per monitor.
           </p>
-
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <Button href="#download">Download ChromaDeck</Button>
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <Button href="#download">Download</Button>
             <Button href={REPO_URL} variant="ghost" external icon={false}>
-              Explore on GitHub
+              Source on GitHub
             </Button>
           </div>
-
-          <p className="t-meta mt-7 text-subtle">
-            {release.tag} stable · Windows 10/11 x64 · MIT licensed
-          </p>
         </div>
 
-        <figure className="enter-slow mt-16 sm:mt-20">
-          <img
-            src="/app/dashboard.png"
-            width={2560}
-            height={1600}
-            alt="ChromaDeck main window: a monitor dashboard with three displays, one with the Warm Cinema preset applied, above a horizontal library of colour presets."
-            className="shot"
-            fetchPriority="high"
-          />
-          <figcaption className="t-meta mt-4 flex flex-wrap justify-between gap-3 text-subtle">
-            <span>Main window — monitor dashboard above the preset library</span>
-            <span>v0.8.2 · sample data</span>
-          </figcaption>
-        </figure>
+        <div ref={stage} className="hero-stage enter-slow">
+          <figure ref={back} className="hero-plane window">
+            <div className="window-bar">
+              <span className="label text-subtle">ChromaDeck / main window</span>
+              <span className="label hidden text-subtle sm:inline">Sample data</span>
+            </div>
+            <img
+              src="/app/dashboard.png"
+              width={2560}
+              height={1600}
+              alt="ChromaDeck main window. Three monitor cards sit at the top, with Warm Cinema applied to an LG UltraGear. The preset library runs along the bottom."
+              className="gradable block h-auto w-full"
+              fetchPriority="high"
+            />
+          </figure>
+
+          <div ref={front} className="hero-plane hero-dialog">
+            <img
+              src="/app/apply.png"
+              width={1040}
+              height={904}
+              alt="The apply dialog, open over the main window. Photo Vibrant is about to be applied to the LG UltraGear."
+              className="gradable block h-auto w-full"
+            />
+          </div>
+        </div>
       </div>
     </section>
   );

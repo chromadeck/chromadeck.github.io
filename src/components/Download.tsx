@@ -1,102 +1,97 @@
 "use client";
-import * as React from "react";
-import { useRelease, formatBytes, Button, Chip } from "./ui";
+import { useRelease, formatBytes } from "./ui";
 import { Reveal } from "./Reveal";
-import { ScrubText } from "./ScrubText";
+import { ArrowDown } from "lucide-react";
+import type { ReleaseAsset } from "../lib/releases";
 
+type Row = { key: string; label: string; note: string; asset: ReleaseAsset | null; recommended?: boolean };
+
+/**
+ * Download: one row per installer, newest release first. The MSI is marked
+ * recommended. Rows with no asset in the release are left out.
+ */
 export function Download() {
   const release = useRelease();
-  const [warn, setWarn] = React.useState(false);
 
-  const asset = (a: { name: string; size: number } | null) =>
-    a ? `${a.name} · ${formatBytes(a.size)}` : null;
+  const rows: Row[] = [
+    { key: "msi", label: "MSI installer", note: "The in-app updater installs this format.", asset: release.msi, recommended: true },
+    { key: "setup", label: "Setup wizard", note: "A guided .exe installer.", asset: release.setup },
+    { key: "portable", label: "Portable ZIP", note: "Unzip and run. No install step.", asset: release.portable },
+    { key: "exe", label: "Standalone executable", note: "Single file.", asset: release.exe },
+  ];
+  const available = rows.filter((r) => r.asset);
 
   return (
-    <section id="download" aria-labelledby="download-title" className="scroll-mt-24 border-y border-border py-24 sm:py-32">
-      <div className="mx-auto max-w-[1200px] px-6 sm:px-10">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+    <section id="download" aria-labelledby="download-title" className="scroll-mt-16 border-t border-border">
+      <div className="mx-auto max-w-[1200px] px-6 py-20 sm:px-10 sm:py-28">
+        <div className="grid gap-12 lg:grid-cols-[1fr_1.3fr]">
           <Reveal>
-            <div>
-              <p className="chapter eyebrow">
-                <span>05</span>
-                <span>Get ChromaDeck</span>
-              </p>
-              <h2 id="download-title" className="t-h2 mt-4 text-foreground">
-                Ready to take control of your display?
-              </h2>
-              <ScrubText
-                className="mt-5 max-w-[52ch]"
-                lead
-                paragraphs={[
-                  "Get ChromaDeck and start building your own display colour experience.",
-                ]}
-              />
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Chip active>Windows 10 / 11 x64</Chip>
-                <Chip active>MIT licensed</Chip>
-                <Chip active>Free</Chip>
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal staggerMs={80}>
-            <div className="rounded-[8px] border border-border bg-surface p-8">
-            <h3 className="t-h3 mb-6 text-foreground">{release.tag} — Windows x64</h3>
-
-            <div className="flex flex-col gap-3">
-              <Button href={release.msi!.browser_download_url} className="w-full" icon={false} wrap>
-                MSI installer ({asset(release.msi)})
-              </Button>
-              <Button href={release.setup!.browser_download_url} className="w-full" icon={false} wrap>
-                Setup wizard ({asset(release.setup)})
-              </Button>
-              <Button href={release.portable!.browser_download_url} className="w-full" icon={false} wrap>
-                Portable ZIP ({asset(release.portable)})
-              </Button>
-              {release.exe && (
-                <Button
-                  href={release.exe.browser_download_url}
-                  variant="ghost"
-                  className="w-full"
-                  icon={false}
-                  wrap
-                >
-                  Standalone executable ({asset(release.exe)})
-                </Button>
-              )}
-            </div>
-
-            <p className="t-meta mt-6 leading-relaxed text-subtle">
-              Source release page:{" "}
+            <h2 id="download-title" className="t-h1 max-w-[14ch] text-foreground">
+              Get ChromaDeck.
+            </h2>
+            <p className="t-lead mt-5 max-w-[44ch] text-muted">
+              Free, MIT licensed, no account. Pick an installer. If you are not sure, take the MSI.
+            </p>
+            <dl className="label-plate mt-10">
+              {[
+                ["Release", release.tag],
+                ["Platform", "Windows 10 / 11 x64"],
+                ["Colour path", "NVAPI, GDI fallback"],
+                ["Licence", "MIT"],
+                ["Account", "None"],
+              ].map(([k, v]) => (
+                <div key={k}>
+                  <dt className="label text-subtle">{k}</dt>
+                  <dd className="text-[var(--t-sm)] text-foreground">{v}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="label mt-6 leading-relaxed text-subtle">
+              Files come from the{" "}
               <a
                 href={release.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground underline decoration-border-hover underline-offset-2 hover:decoration-primary"
+                className="text-foreground underline decoration-border-hover underline-offset-4 hover:decoration-primary"
               >
-                GitHub releases
+                {release.tag} GitHub release
               </a>
+              .
             </p>
-            <p className="t-meta mt-4 leading-relaxed text-subtle">
-              Windows 10/11 x64 only; NVIDIA driver colour path with GDI fallback elsewhere. No
-              guaranteed HDR or hardware backlight control.
-            </p>
+          </Reveal>
 
-            <button
-              type="button"
-              className="press t-meta mt-5 inline-flex items-center gap-2 rounded-[8px] border border-border-hover bg-surface px-3 py-2 text-muted transition-colors hover:text-foreground"
-              onClick={() => setWarn(true)}
-            >
-              <span className="btn-content">Show verified fallback</span>
-            </button>
-
-            {warn && (
-              <p className="t-meta mt-4 text-subtle">
-                The live GitHub release is unavailable — download links point to the verified
-                fallback: {release.tag}.
-              </p>
-            )}
-            </div>
+          <Reveal staggerMs={80}>
+            <ul className="border-t border-border">
+              {available.map((r) => (
+                <li key={r.key} className="border-b border-border">
+                  <a
+                    href={r.asset!.browser_download_url}
+                    className="download-row group grid grid-cols-[1fr_auto] items-center gap-4 py-5 sm:px-4"
+                  >
+                    <span className="min-w-0">
+                      <span className="flex flex-wrap items-center gap-3">
+                        <span className="t-h3 text-foreground">{r.label}</span>
+                        {r.recommended && (
+                          <span className="label border border-primary-border bg-primary-subtle px-2 py-0.5 text-primary">
+                            Recommended
+                          </span>
+                        )}
+                      </span>
+                      <span className="mt-1 block text-[var(--t-sm)] text-muted">{r.note}</span>
+                      <span className="label mt-2 block break-all text-subtle">
+                        {r.asset!.name} · {formatBytes(r.asset!.size)}
+                      </span>
+                    </span>
+                    <span
+                      className="download-icon grid size-11 place-items-center border border-border-hover text-muted"
+                      aria-hidden="true"
+                    >
+                      <ArrowDown size={18} strokeWidth={2} />
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </div>
       </div>
