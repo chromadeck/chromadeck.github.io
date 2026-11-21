@@ -52,7 +52,12 @@ export default function RootLayout({
         <link rel="icon" type="image/png" href="/chromadeck.png" />
         <link rel="apple-touch-icon" href="/chromadeck.png" />
       </head>
-      <body className="bg-background text-foreground antialiased">{children}</body>
+      {/* Same reason on <body>: extensions such as ColorZilla add attributes
+          (cz-shortcut-listen) here before hydration. This only silences
+          attribute differences on <body> itself, not on its children. */}
+      <body className="bg-background text-foreground antialiased" suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }
