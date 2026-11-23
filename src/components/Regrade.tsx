@@ -47,15 +47,16 @@ const targetOf = (s: RegradeState): Grade => {
   return { params: p.params, vibrance: p.vibrance };
 };
 
-/** Writes one grade to the SVG filter, the token variables and the readout. */
-function writeGrade(g: Grade, filter: SVGFilterElement | null, out: HTMLElement | null) {
+/** Token steps per transition. Each token write restyles and repaints the whole page. */
+const TOKEN_STEPS = 4;
+const stepped = (t: number) => Math.round(t * TOKEN_STEPS) / TOKEN_STEPS;
+
+/** SVG filter and readout. Cheap: repaints only the .gradable elements. */
+function writeFilter(g: Grade, filter: SVGFilterElement | null, out: HTMLElement | null) {
   const root = document.documentElement;
   if (out) out.textContent = readout(g);
   if (isIdentity(g)) {
     root.classList.remove("is-graded");
-    for (const k of Object.keys(TOKENS)) root.style.removeProperty(`--color-${k}`);
-    root.style.removeProperty("--color-primary-subtle");
-    root.style.removeProperty("--color-primary-border");
     return;
   }
   const ramp = rampFor(g);
@@ -65,13 +66,30 @@ function writeGrade(g: Grade, filter: SVGFilterElement | null, out: HTMLElement 
     filter.querySelector("feFuncB")?.setAttribute("tableValues", tableValues(ramp.b));
     filter.querySelector("feColorMatrix")?.setAttribute("values", ramp.saturate.toFixed(3));
   }
+  root.classList.add("is-graded");
+}
+
+let lastTokenKey = "";
+
+/** Page colour tokens. Expensive, so callers pass a stepped grade and repeats are skipped. */
+function writeTokens(g: Grade) {
+  const key = readout(g);
+  if (key === lastTokenKey) return;
+  lastTokenKey = key;
+  const root = document.documentElement;
+  if (isIdentity(g)) {
+    for (const k of Object.keys(TOKENS)) root.style.removeProperty(`--color-${k}`);
+    root.style.removeProperty("--color-primary-subtle");
+    root.style.removeProperty("--color-primary-border");
+    return;
+  }
+  const ramp = rampFor(g);
   for (const [k, hex] of Object.entries(TOKENS)) {
     root.style.setProperty(`--color-${k}`, `rgb(${gradeRgb(hex, ramp).join(" ")})`);
   }
   const [r, gg, b] = gradeRgb(TOKENS.primary, ramp);
   root.style.setProperty("--color-primary-subtle", `rgb(${r} ${gg} ${b} / 0.12)`);
   root.style.setProperty("--color-primary-border", `rgb(${r} ${gg} ${b} / 0.3)`);
-  root.classList.add("is-graded");
 }
 
 /**
@@ -99,7 +117,9 @@ export function Regrade() {
       lastManual = s.manual;
       if (!manualChanged || prefersReducedMotion()) {
         shown = target;
-        writeGrade(shown, filterRef.current, readoutRef.current);
+        writeFilter(shown, filterRef.current, readoutRef.current);
+        // Scroll-driven: tokens follow the same blend in coarse steps.
+        writeTokens(s.manual ? target : scrollGrade({ ...s, scroll: stepped(s.scroll) }));
         return;
       }
       const from = shown;
@@ -108,18 +128,22 @@ export function Regrade() {
         const t = Math.min(1, (now - start) / 360);
         const eased = 1 - Math.pow(1 - t, 3);
         shown = blend(from, target, eased);
-        writeGrade(shown, filterRef.current, readoutRef.current);
+        writeFilter(shown, filterRef.current, readoutRef.current);
+        writeTokens(blend(from, target, stepped(eased)));
         if (t < 1) raf = requestAnimationFrame(step);
       };
       raf = requestAnimationFrame(step);
     };
 
-    writeGrade(shown, filterRef.current, readoutRef.current);
+    writeFilter(shown, filterRef.current, readoutRef.current);
+    writeTokens(shown);
     const off = subscribeRegrade(apply);
     return () => {
       off();
       cancelAnimationFrame(raf);
-      writeGrade({ params: presetById("neutral").params, vibrance: 50 }, null, null);
+      const neutral = { params: presetById("neutral").params, vibrance: 50 };
+      writeFilter(neutral, null, null);
+      writeTokens(neutral);
     };
   }, []);
 

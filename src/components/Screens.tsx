@@ -53,6 +53,7 @@ export function Screens() {
   const section = useRef<HTMLElement>(null);
   const rail = useRef<HTMLDivElement>(null);
   const overflow = useRef(0);
+  const items = useRef<{ node: HTMLElement; left: number }[]>([]);
   const [height, setHeight] = useState<number | null>(null);
 
   // Measure the rail and size the section so the travel is exact.
@@ -65,6 +66,8 @@ export function Screens() {
     }
     const measure = () => {
       overflow.current = Math.max(0, el.scrollWidth - window.innerWidth);
+      // Cache item positions here so the per-frame handler never reads layout.
+      items.current = (Array.from(el.children) as HTMLElement[]).map((node) => ({ node, left: node.offsetLeft }));
       setHeight(Math.round(overflow.current * RATE + window.innerHeight));
     };
     measure();
@@ -84,13 +87,11 @@ export function Screens() {
     el.style.transform = `translate3d(${x}px, 0, 0)`;
     // Items after the first settle in as they cross into view.
     const vw = window.innerWidth;
-    const items = Array.from(el.children) as HTMLElement[];
-    items.forEach((item, i) => {
+    items.current.forEach(({ node, left }, i) => {
       if (i === 0) return;
-      const left = item.offsetLeft + x;
-      const settle = Math.min(1, Math.max(0, (vw * 0.98 - left) / (vw * 0.4)));
-      item.style.opacity = String(0.55 + 0.45 * settle);
-      item.style.transform = `translate3d(0, ${(1 - settle) * 28}px, 0)`;
+      const settle = Math.min(1, Math.max(0, (vw * 0.98 - (left + x)) / (vw * 0.4)));
+      node.style.opacity = String(0.55 + 0.45 * settle);
+      node.style.transform = `translate3d(0, ${(1 - settle) * 28}px, 0)`;
     });
   }, []);
 
