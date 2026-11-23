@@ -52,7 +52,8 @@ export function HowItWorks() {
   const list = useRef<HTMLOListElement>(null);
 
   const onProgress = useCallback((p: number) => {
-    const s = Math.round(smooth((p - 0.28) / 0.3) * 50) / 50;
+    // 24 steps: each step restyles the page, so fewer steps means fewer repaints.
+    const s = Math.round(smooth((p - 0.28) / 0.3) * 24) / 24;
     setScroll(s, p > 0.76);
   }, []);
 
