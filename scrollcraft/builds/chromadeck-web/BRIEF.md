@@ -91,3 +91,10 @@ Deviation from the skill: built inside the existing Next.js app with GSAP
 ScrollTrigger, not the scrollcraft engine, so the act markup does not use
 `data-sc-*`. The project's DESIGN.md bans shadows, so hero depth uses
 occlusion (a ring of page ground) instead of an offset shadow.
+
+## Update, 2026-11-24
+
+The owner found the page regrade annoying, so it is removed: no SVG grade
+filter, no token regrade, no preset control, no colour bar. How it works is
+now a plain list of three steps. This build no longer has a signature move;
+its fingerprint row below records what shipped first.
