@@ -28,11 +28,11 @@ const dl = (tag: string, name: string, size: number): ReleaseAsset => ({
  * address can exhaust). Updated by hand whenever a release ships.
  */
 export const FALLBACK: Release = {
-  tag: "v0.9.4",
-  url: `${REPO_URL}/releases/tag/v0.9.4`,
-  msi: dl("v0.9.4", "ChromaDeck_0.9.4_x64_en-US.msi", 4313088),
-  setup: dl("v0.9.4", "ChromaDeck_0.9.4_x64-setup.exe", 3052380),
-  portable: dl("v0.9.4", "ChromaDeck_0.9.4_x64-portable.zip", 3719527),
+  tag: "v0.9.5",
+  url: `${REPO_URL}/releases/tag/v0.9.5`,
+  msi: dl("v0.9.5", "ChromaDeck_0.9.5_x64_en-US.msi", 4313088),
+  setup: dl("v0.9.5", "ChromaDeck_0.9.5_x64-setup.exe", 3053029),
+  portable: dl("v0.9.5", "ChromaDeck_0.9.5_x64-portable.zip", 3719836),
   // Releases since v0.9.2 do not ship a bare chromadeck.exe.
   exe: null,
 };

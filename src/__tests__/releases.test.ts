@@ -18,9 +18,9 @@ describe("fetchLatestRelease", () => {
   it("falls back to the verified stable release on network error", async () => {
     globalThis.fetch = () => Promise.reject(new Error("network")) as any;
     const r = await fetchLatestRelease();
-    expect(r.tag).toBe("v0.9.4");
-    expect(r.msi!.browser_download_url).toContain("/releases/download/v0.9.4/");
-    expect(r.msi!.name).toBe("ChromaDeck_0.9.4_x64_en-US.msi");
+    expect(r.tag).toBe("v0.9.5");
+    expect(r.msi!.browser_download_url).toContain("/releases/download/v0.9.5/");
+    expect(r.msi!.name).toBe("ChromaDeck_0.9.5_x64_en-US.msi");
     expect(r.setup && r.portable).toBeTruthy();
     // Releases since v0.9.2 no longer ship a bare chromadeck.exe.
     expect(r.exe).toBeNull();
@@ -32,23 +32,23 @@ describe("fetchLatestRelease", () => {
       Promise.resolve({
         ok: true,
         json: async () => ({
-          tag_name: "v0.9.5",
+          tag_name: "v0.9.6",
           html_url: "https://x/rel",
           assets: [
-            asset("ChromaDeck_0.9.5_x64-portable.zip"),
-            asset("ChromaDeck_0.9.5_x64-setup.exe"),
-            asset("ChromaDeck_0.9.5_x64-setup.exe.sig"),
-            asset("ChromaDeck_0.9.5_x64_en-US.msi"),
-            asset("ChromaDeck_0.9.5_x64_en-US.msi.sig"),
+            asset("ChromaDeck_0.9.6_x64-portable.zip"),
+            asset("ChromaDeck_0.9.6_x64-setup.exe"),
+            asset("ChromaDeck_0.9.6_x64-setup.exe.sig"),
+            asset("ChromaDeck_0.9.6_x64_en-US.msi"),
+            asset("ChromaDeck_0.9.6_x64_en-US.msi.sig"),
           ],
         }),
       }) as any;
     const r = await fetchLatestRelease();
     expect(r).not.toBe(FALLBACK);
-    expect(r.tag).toBe("v0.9.5");
-    expect(r.msi!.name).toBe("ChromaDeck_0.9.5_x64_en-US.msi");
-    expect(r.setup!.name).toBe("ChromaDeck_0.9.5_x64-setup.exe"); // not the .sig
-    expect(r.portable!.name).toBe("ChromaDeck_0.9.5_x64-portable.zip");
+    expect(r.tag).toBe("v0.9.6");
+    expect(r.msi!.name).toBe("ChromaDeck_0.9.6_x64_en-US.msi");
+    expect(r.setup!.name).toBe("ChromaDeck_0.9.6_x64-setup.exe"); // not the .sig
+    expect(r.portable!.name).toBe("ChromaDeck_0.9.6_x64-portable.zip");
     expect(r.exe).toBeNull();
   });
 
