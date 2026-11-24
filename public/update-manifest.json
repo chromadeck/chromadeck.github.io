@@ -1,7 +1,7 @@
 {
-  "version": "0.9.4",
-  "notes": "ChromaDeck v0.9.4 — the Pin toggle is back in the Apply dialog, so you can keep a preset enforced on a monitor again.",
-  "pub_date": "2026-11-16T14:25:08Z",
-  "url": "https://github.com/miiidev/ChromaDeck/releases/download/v0.9.4/ChromaDeck_0.9.4_x64_en-US.msi",
-  "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUQXQwNmFzU0NmZ0t0ZS9EOE9nemJwdVVCc1UzUC9ZQ0VZN1lKUkZuQ2Fua0h3dWw4MDFHQUxwKzlJTGVRL2NDSkpGTkJybHpJR3docmpkYkJGN1FRMmIydTM3M3NuUndzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk0ODM5MDc4CWZpbGU6Q2hyb21hRGVja18wLjkuNF94NjRfZW4tVVMubXNpCXZlcnNpb246MC45LjQKMmExbnZmOU5DWWswSWRRelRqZW0vR1lWYVd6RCtoZDNvODB3V1FIRVJYclBXYXdaWGFxZGtJUVgzRTBkYVJub1I1UWc2amxDT29XV01VUWw3N2tOQnc9PQo="
+  "version": "0.9.5",
+  "notes": "ChromaDeck v0.9.5 — fixes monitor/preset panel overflow across window sizes, dialog clipping on long preset names, carousel arrows & view persistence, global search shortcuts, drag-and-drop alignment, keyboard focus rings, and updater dialog polish.",
+  "pub_date": "2026-11-24T05:19:30Z",
+  "url": "https://github.com/miiidev/ChromaDeck/releases/download/v0.9.5/ChromaDeck_0.9.5_x64_en-US.msi",
+  "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUQXQwNmFzU0NmZ0RROGtOOW4yZ2xFaGdTL21tMHhqY2pqWUtVSTFHTnVtVkJ2YnV4MWlqcUpZc2kvdE0vZzNBQldObG83dlY5YzRacVBLUW5BRmtsQSs1TUNHcHg1NEFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NDk3NTM4CWZpbGU6Q2hyb21hRGVja18wLjkuNV94NjRfZW4tVVMubXNpCXZlcnNpb246MC45LjUKa0hmclk1WXVhVnJUS3VRbDZoZGdRODFiMjl0UU5aYmdpSVBJRmZrQ2lWbzdIVlJiVUxhOFZmcXh1NUJYVTMvYWMrMWVxa1ZyL0pMN2t0azB3TEhaREE9PQo="
 }
