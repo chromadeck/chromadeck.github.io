@@ -36,7 +36,7 @@ export function Download() {
               {[
                 ["Release", release.tag],
                 ["Platform", "Windows 10 / 11 x64"],
-                ["Colour path", "NVAPI, GDI fallback"],
+                ["Colour path", "NVAPI, Intel IGCL, GDI"],
                 ["Licence", "MIT"],
                 ["Account", "None"],
               ].map(([k, v]) => (

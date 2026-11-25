@@ -23,9 +23,9 @@ const dl = (tag: string, name: string, size: number): ReleaseAsset => ({
 });
 
 /**
- * Verified fallback used when the GitHub API is unreachable or rate-limited
- * (unauthenticated API allows 60 requests/hour per IP, which a shared or CGNAT
- * address can exhaust). Updated by hand whenever a release ships.
+ * Verified fallback used only when the GitHub API is unreachable or rate-limited
+ * (unauthenticated API allows 60 requests/hour per IP). Live page loads always
+ * resolve the newest GitHub Release automatically without editing this file.
  */
 export const FALLBACK: Release = {
   tag: "v0.9.5",
@@ -36,6 +36,43 @@ export const FALLBACK: Release = {
   // Releases since v0.9.2 do not ship a bare chromadeck.exe.
   exe: null,
 };
+
+const CACHE_KEY = "chromadeck.latestRelease.v1";
+const CACHE_TTL_MS = 5 * 60 * 1000;
+
+function readCachedRelease(): Release | null {
+  try {
+    if (typeof sessionStorage === "undefined") return null;
+    const raw = sessionStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as { savedAt?: number; release?: Release };
+    if (
+      typeof parsed?.savedAt !== "number" ||
+      Date.now() - parsed.savedAt > CACHE_TTL_MS ||
+      !parsed.release?.tag ||
+      !parsed.release.msi ||
+      !parsed.release.setup ||
+      !parsed.release.portable
+    ) {
+      return null;
+    }
+    return parsed.release;
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedRelease(release: Release): void {
+  try {
+    if (typeof sessionStorage === "undefined") return;
+    sessionStorage.setItem(
+      CACHE_KEY,
+      JSON.stringify({ savedAt: Date.now(), release }),
+    );
+  } catch {
+    // sessionStorage may be disabled in private browsing; ignore.
+  }
+}
 
 interface GitHubAsset {
   name: string;
@@ -49,6 +86,9 @@ function findAsset(assets: GitHubAsset[], pattern: RegExp): ReleaseAsset | null 
 }
 
 export async function fetchLatestRelease(): Promise<Release> {
+  const cached = readCachedRelease();
+  if (cached) return cached;
+
   try {
     const res = await fetch(
       "https://api.github.com/repos/miiidev/ChromaDeck/releases/latest",
@@ -74,6 +114,7 @@ export async function fetchLatestRelease(): Promise<Release> {
     // data. The standalone exe is optional: v0.9.x releases do not include it.
     if (!release.msi || !release.setup || !release.portable) return FALLBACK;
 
+    writeCachedRelease(release);
     return release;
   } catch {
     return FALLBACK;

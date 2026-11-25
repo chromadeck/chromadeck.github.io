@@ -1,7 +1,7 @@
 {
-  "version": "0.9.5",
-  "notes": "ChromaDeck v0.9.5 — fixes monitor/preset panel overflow across window sizes, dialog clipping on long preset names, carousel arrows & view persistence, global search shortcuts, drag-and-drop alignment, keyboard focus rings, and updater dialog polish.",
-  "pub_date": "2026-11-24T05:19:30Z",
-  "url": "https://github.com/miiidev/ChromaDeck/releases/download/v0.9.5/ChromaDeck_0.9.5_x64_en-US.msi",
-  "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUQXQwNmFzU0NmZ0RROGtOOW4yZ2xFaGdTL21tMHhqY2pqWUtVSTFHTnVtVkJ2YnV4MWlqcUpZc2kvdE0vZzNBQldObG83dlY5YzRacVBLUW5BRmtsQSs1TUNHcHg1NEFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NDk3NTM4CWZpbGU6Q2hyb21hRGVja18wLjkuNV94NjRfZW4tVVMubXNpCXZlcnNpb246MC45LjUKa0hmclk1WXVhVnJUS3VRbDZoZGdRODFiMjl0UU5aYmdpSVBJRmZrQ2lWbzdIVlJiVUxhOFZmcXh1NUJYVTMvYWMrMWVxa1ZyL0pMN2t0azB3TEhaREE9PQo="
+  "version": "0.9.6",
+  "notes": "ChromaDeck v0.9.6 — editor RGB gains, click-to-type numeric slider input, double-click neutral reset, live hardware preview with clean restore, NVCP live capture, detach/clear ICC profiles, and opt-in ICC dissociation on Reset.",
+  "pub_date": "2026-11-25T15:24:45Z",
+  "url": "https://github.com/miiidev/ChromaDeck/releases/download/v0.9.6/ChromaDeck_0.9.6_x64_en-US.msi",
+  "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUQXQwNmFzU0NmZ0ErWWJaSE1Ub1VZRjIrL3Vjb2ZZeVZhYysyZTl1a0dlVC94d2k5OU9QM01PSWVKUnJaMVptR28wdVlCTmhYcU90SVVqVzFVY2E0WldSNVNFRkVWT1FFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzk1NjIwMjgwCWZpbGU6Q2hyb21hRGVja18wLjkuNl94NjRfZW4tVVMubXNpCXZlcnNpb246MC45LjYKTWpLRnc1c0lDZWZkQ1NXUmtWMWJXbHY4Uk91ODJqWlo0Z29rdGNaVGU0eWsyOS9oM1VDVCtKTVk5cG5tMG1pNHZUL3Rsc0gwT0NJc0hOSHk1RlFNQXc9PQo="
 }
