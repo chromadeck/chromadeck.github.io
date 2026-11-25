@@ -18,7 +18,7 @@ function ScreenItem({ s }: { s: Screen }) {
   return (
     <article className="screen-item" style={{ "--w": s.width, "--hue": s.hue } as CSSProperties}>
       <div className="screen-frame">
-        <img src={s.src} width={s.w} height={s.h} alt={s.alt} loading="lazy" className="gradable block h-auto w-full" />
+        <img src={s.src} width={s.w} height={s.h} alt={s.alt} loading="lazy" className="block h-auto w-full" />
       </div>
       <div className="mt-4 flex items-center gap-2.5">
         <span className="size-2.5 shrink-0 rounded-[2px] bg-[var(--hue)]" aria-hidden="true" />

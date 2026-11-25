@@ -61,7 +61,7 @@ export function Hero() {
               width={2560}
               height={1600}
               alt="ChromaDeck main window. Three monitor cards sit at the top, with Warm Cinema applied to an LG UltraGear. The preset library runs along the bottom."
-              className="gradable block h-auto w-full"
+              className="block h-auto w-full"
               fetchPriority="high"
             />
           </figure>
@@ -72,7 +72,7 @@ export function Hero() {
               width={1040}
               height={904}
               alt="The apply dialog, open over the main window. Photo Vibrant is about to be applied to the LG UltraGear."
-              className="gradable block h-auto w-full"
+              className="block h-auto w-full"
             />
           </div>
         </div>

@@ -131,7 +131,7 @@ export function Video() {
                 playsInline
                 preload="metadata"
                 aria-label="ChromaDeck product walkthrough"
-                className="gradable h-full w-full object-contain"
+                className="h-full w-full object-contain"
               >
                 <source src="/video/chromadeck-walkthrough.mp4" type="video/mp4" />
                 Your browser does not support embedded video.{" "}

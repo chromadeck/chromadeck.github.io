@@ -8,7 +8,6 @@ import { Video } from "../components/Video";
 import { Principles } from "../components/Principles";
 import { Download } from "../components/Download";
 import { Footer } from "../components/Footer";
-import { Regrade } from "../components/Regrade";
 import { MotionProvider } from "../components/tools/MotionProvider";
 
 export default function Page() {
@@ -25,7 +24,6 @@ export default function Page() {
           <Download />
         </main>
         <Footer />
-        <Regrade />
       </div>
     </MotionProvider>
   );
